@@ -1,0 +1,7 @@
+[run]
+branch = True
+include=../dice/*.py
+omit=*__init__.py
+
+# Uncomment this for detailed debugging
+# debug=config,trace

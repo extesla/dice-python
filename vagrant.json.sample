@@ -1,0 +1,36 @@
+{
+  "ip": "192.168.56.101",
+  "ports": {
+    "http": 80,
+    "https": 443
+  },
+  "share": {
+    "type": "smb",
+    "create": true,
+    "mount_options": [],
+    "rsync__args": ["--verbose", "--archive", "--delete", "-z"],
+    "rsync__auto": true,
+    "rsync__exlcude": [
+      ".externalToolBuilders",
+      ".git",
+      ".idea",
+      ".settings",
+      ".vagrant",
+      "build",
+      "doc",
+      "logs",
+      "node_modules",
+      "resources",
+      "temp",
+      "wwwroot/app/bootstrap.php.cache",
+      "wwwroot/app/cache",
+      "wwwroot/app/logs",
+      "wwwroot/assets",
+      "wwwroot/bin",
+      "wwwroot/var",
+      "wwwroot/vendor",
+      "wwwroot/web/bundles",
+      "wwwroot/web/i18n"
+    ]
+  }
+}

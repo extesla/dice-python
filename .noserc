@@ -1,0 +1,11 @@
+[nosetests]
+all-modules=True
+where=test/
+with-cov=True
+with-xunit=True
+xunit-file=test/nosetests.xml
+
+# Code coverage; if you want to also run with terminal output, call the command with "--cov-report term"
+cov=.
+cov-config=.coveragerc
+cov-report=xml

@@ -60,3 +60,11 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# IDE (Eclipse, PyCharm, etc.)
+.idea
+.settings
+
+# DevOps Files
+.vagrant
+vagrant.json

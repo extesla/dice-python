@@ -23,39 +23,48 @@ from dice.tokens import Integer
 from pyparsing import (CaselessLiteral, Literal, Optional, StringStart, StringEnd, Word, nums)
 #: Empty
 
+
 def dice():
     token = Optional(integer()) + CaselessLiteral("d") + dice_sides()
     token.setName("dice")
     token.setResultsName("dice")
     return token
 
+
 def dice_sides():
     token = integer()\
-          | CaselessLiteral("f") \
-          | CaselessLiteral("fate")
+          | CaselessLiteral("fate") \
+          | CaselessLiteral("f")
           #| StringStart() + CaselessLiteral("f") + StringEnd() \
           #| StringStart() + CaselessLiteral("fate") + StringEnd()
     token.setResultsName("dice_sides")
     return token
+
 
 def expression():
     token = Optional(Literal("(")) + term() + Optional(Literal(")"))
     token.setName("expression")
     return token
 
+
 def flags():
-    token = StringStart() + CaselessLiteral("!adv") + StringEnd() \
-          | StringStart() + CaselessLiteral("!advantage") + StringEnd() \
-          | StringStart() + CaselessLiteral("!dis") + StringEnd() \
-          | StringStart() + CaselessLiteral("!disadvantage") + StringEnd() \
-          | StringStart() + CaselessLiteral("!drop") + StringEnd() \
-          | StringStart() + CaselessLiteral("!grow") + StringEnd() \
-          | StringStart() + CaselessLiteral("!keep") + StringEnd() \
-          | StringStart() + CaselessLiteral("!shrink") + StringEnd() \
-          | StringStart() + CaselessLiteral("!take") + StringEnd()
+
+    token = (
+        CaselessLiteral("!advantage")
+        | CaselessLiteral("!adv")
+        | CaselessLiteral("!disadvantage")
+        | CaselessLiteral("!dis")
+        | CaselessLiteral("!drop")
+        | CaselessLiteral("!grow")
+        | CaselessLiteral("!keep")
+        | CaselessLiteral("!shrink")
+        | CaselessLiteral("!take")
+    )
+
     token.setName("flags")
     token.setResultsName("flags")
     return token
+
 
 def integer():
     token = Word(nums)
@@ -63,11 +72,13 @@ def integer():
     token.setName("integer")
     return token
 
+
 def operator():
     token = Literal("+") | Literal("-") | Literal("/") | Literal("*")
     token.setName("operator")
     token.setResultsName("operator")
     return token
+
 
 def term():
     """
@@ -79,3 +90,5 @@ def term():
     token.setName("term")
     token.setResultsName("term")
     return token
+
+

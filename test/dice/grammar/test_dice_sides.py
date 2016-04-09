@@ -27,7 +27,6 @@ import unittest
 class DiceSidesGrammarTest(unittest.TestCase):
     """
     """
-
     def test_dice_sides_fate(self):
         token = dice_sides()
         actual = token.parseString("fate")
@@ -46,9 +45,14 @@ class DiceSidesGrammarTest(unittest.TestCase):
         self.assertEqual(len(actual), 1)
         self.assertEqual(actual[0], 20)
 
+    def test_dice_sides_against_alphaZ(self):
+        token = dice_sides()
+        self.assertRaises(ParseException, token.parseString, "invalid")
+
+
     def test_dice_sides_against_alpha(self):
-        with self.assertRaises(ParseException):
-            token = dice_sides()
+        token = dice_sides()
+        with self.assertRaises(ParseException) as context:
             token.parseString("invalid")
 
 

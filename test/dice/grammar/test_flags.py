@@ -21,14 +21,17 @@
 # IN THE SOFTWARE.
 from dice.grammar import flags
 from pprint import pprint
-from pyparsing import ParseException
+from pyparsing import (ParseException, StringStart, StringEnd)
 import unittest
+
+
+def flags_only():
+    return StringStart() + flags() + StringEnd()
 
 
 class FlagsGrammarTest(unittest.TestCase):
     """
     """
-
     def test_flags_adv(self):
         token = flags()
         actual = token.parseString("!adv")
@@ -36,9 +39,9 @@ class FlagsGrammarTest(unittest.TestCase):
         self.assertEqual(actual[0], "!adv")
 
     def test_flags_adv_invalid(self):
-        token = flags()
+        token = flags_only()
         with self.assertRaises(ParseException):
-            actual = token.parseString("!advant")
+            token.parseString("!advant")
 
     def test_flags_adv_mixed_case(self):
         token = flags()
@@ -76,14 +79,8 @@ class FlagsGrammarTest(unittest.TestCase):
         self.assertEqual(len(actual), 1)
         self.assertEqual(actual[0], "!dis")
 
-    def test_flags_dis(self):
-        token = flags()
-        actual = token.parseString("!dis")
-        self.assertEqual(len(actual), 1)
-        self.assertEqual(actual[0], "!dis")
-
     def test_flags_dis_invalid(self):
-        token = flags()
+        token = flags_only()
         with self.assertRaises(ParseException):
             actual = token.parseString("!disadv")
 
@@ -124,7 +121,7 @@ class FlagsGrammarTest(unittest.TestCase):
         self.assertEqual(actual[0], "!drop")
 
     def test_flags_drop_invalid(self):
-        token = flags()
+        token = flags_only()
         with self.assertRaises(ParseException):
             actual = token.parseString("!drops")
 
@@ -147,7 +144,7 @@ class FlagsGrammarTest(unittest.TestCase):
         self.assertEqual(actual[0], "!grow")
 
     def test_flags_grow_invalid(self):
-        token = flags()
+        token = flags_only()
         with self.assertRaises(ParseException):
             actual = token.parseString("!grows")
 
@@ -170,7 +167,7 @@ class FlagsGrammarTest(unittest.TestCase):
         self.assertEqual(actual[0], "!keep")
 
     def test_flags_keep_invalid(self):
-        token = flags()
+        token = flags_only()
         with self.assertRaises(ParseException):
             actual = token.parseString("!keeps")
 
@@ -193,7 +190,7 @@ class FlagsGrammarTest(unittest.TestCase):
         self.assertEqual(actual[0], "!shrink")
 
     def test_flags_shrink_invalid(self):
-        token = flags()
+        token = flags_only()
         with self.assertRaises(ParseException):
             actual = token.parseString("!shrinks")
 
@@ -216,7 +213,7 @@ class FlagsGrammarTest(unittest.TestCase):
         self.assertEqual(actual[0], "!take")
 
     def test_flags_take_invalid(self):
-        token = flags()
+        token = flags_only()
         with self.assertRaises(ParseException):
             actual = token.parseString("!takes")
 

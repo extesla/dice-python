@@ -65,7 +65,7 @@ class DiceGrammarTest(unittest.TestCase):
         self.assertEqual(len(actual), 3)
         self.assertEqual(actual[0], 3)
         self.assertEqual(actual[1], "d")
-        self.assertEqual(actual[2], "F")
+        self.assertEqual(actual[2], "f") #ZR: Expected to be lowercase as defined in grammar.py
 
 
 if __name__ == '__main__':

@@ -33,31 +33,65 @@ class TermGrammarTest(unittest.TestCase):
         token = term()
         actual = token.parseString("1d6")
         pprint(actual.asList())
-        raise Exception()
+        self.assertEqual(len(actual), 3)
+        self.assertEqual(actual.asList(), [1, 'd', 6])
+
+    def test_term_dice_only_invalid(self):
+        token = term()
+        with self.assertRaises(ParseException):
+            actual = token.parseString("1d1.2")
+        with self.assertRaises(ParseException):
+            actual = token.parseString("1d-6")
+        with self.assertRaises(ParseException):
+            actual = token.parseString("1t6")
 
     def test_term_dice_only_uppercase(self):
         token = term()
         actual = token.parseString("1D6")
         pprint(actual.asList())
-        raise Exception()
+        self.assertEqual(len(actual), 3)
+        #NOTE:  this is the same as in test_term_dice_only as CaselessLiteral will
+        # return the case of the defined matchString, not the search string passed
+        # into parse.   -ZR
+        self.assertEqual(actual.asList(), [1, 'd', 6])
 
     def test_term_dice_with_flag(self):
         token = term()
         actual = token.parseString("1d6!keep")
         pprint(actual.asList())
-        raise Exception()
+        self.assertEqual(len(actual), 4)
+        self.assertEqual(actual.asList(), [1, 'd', 6, '!keep'])
 
     def test_term_dice_with_operator(self):
         token = term()
         actual = token.parseString("1d6+5")
         pprint(actual.asList())
-        raise Exception()
+        self.assertEqual(len(actual), 5)
+        self.assertEqual(actual.asList(), [1, 'd', 6, '+', 5])
 
     def test_term_dice_with_flag_and_operator(self):
         token = term()
         actual = token.parseString("1d6!keep+5")
         pprint(actual.asList())
-        raise Exception()
+        self.assertEqual(len(actual), 6)
+        self.assertEqual(actual.asList(), [1, 'd', 6, '!keep', '+', 5])
+
+    def test_term_dice_with_flag_and_operator_uppercase(self):
+        token = term()
+        actual = token.parseString("1D6!KEEP+5")
+        pprint(actual.asList())
+        self.assertEqual(len(actual), 6)
+        self.assertEqual(actual.asList(), [1, 'd', 6, '!keep', '+', 5])
+
+    def test_term_dice_with_flag_and_operator_invalid(self):
+        token = term()
+        with self.assertRaises(ParseException):
+            actual = token.parseString("1d6!keeper+5")
+        with self.assertRaises(ParseException):
+            actual = token.parseString("1d6a!keep+5")
+        with self.assertRaises(ParseException):
+            actual = token.parseString("1d6!advant+5")
+
 
 
 if __name__ == '__main__':

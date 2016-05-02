@@ -8,6 +8,7 @@ if py_version < (2, 6):
 elif (3, 0) < py_version < (3, 2):
     raise RuntimeError("On Python 3, dice-python requires Python 3.2 or later")
 
+requires = []
 tests_require = []
 if py_version < (3, 3):
     tests_require.append("mock")

@@ -59,6 +59,16 @@ class Operator(Token):
             classname(self), ', '.join(map(str, self.original_operands)))
 
     def evaluate(self):
+        """
+        Evaluates an operator against operands.
+
+        The operands are each evaluated through the :class:`Token`'s
+        ``evaluate_object`` function. Once the operands have been resolved
+        they are fed into the operator's function.
+
+        :return: The result of the operator.
+        :rtype int:
+        """
         self.operands = map(self.evaluate_object, self.operands)
         self.result = self.function(*self.operands)
         return self.result

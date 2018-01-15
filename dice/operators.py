@@ -110,8 +110,18 @@ class Total(Operator):
 # @operator(literal="!drop")
 class Drop(Operator):
     """
-    Operator to drop the ``n`` number of lowest scores. E.g. ``3d6 drop 2``
-    drops the lowest two dice rolls.
+    Operator to drop the ``n`` number of lowest scores.
+
+    The drop operator will drop the lowest ``n`` values in an iterable keeping
+    the rest. The expression ``3d6!drop(2)`` reads as: "roll 3d6 and drop the
+    two lowest dice rolls".
+
+    The operator literal, ``!drop`` takes a single argument indicating the
+    number of values to drop.
+
+    >>> operator = Drop([5, 2, 8], 2)
+    >>> operator.evaluate()
+    [8]
     """
     def function(self, iterable, n):
         for die in sorted(iterable)[:n]:

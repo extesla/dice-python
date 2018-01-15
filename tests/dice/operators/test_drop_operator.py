@@ -24,25 +24,43 @@ import pytest
 
 
 def test_instantiate_drop_operator():
-    operator = Drop(5, 1)
-    assert operator.original_operands == (5,1)
-    assert operator.operands == (5,1)
+    operator = Drop([5, 2, 1, 4], 2)
+    assert operator.original_operands == ([5, 2, 1, 4], 2)
+    assert operator.operands == ([5, 2, 1, 4], 2)
 
 
 def test_repr():
-    operator = Drop(5, 1)
-    assert repr(operator) == "Drop(5, 1)"
+    operator = Drop([5, 2, 1, 4], 2)
+    assert repr(operator) == "Drop([5, 2, 1, 4], 2)"
 
 
 def test_evaluate():
-    pass
+    operator = Drop([5, 2, 1, 4], 2)
+    actual = operator.evaluate()
+    assert actual == [5, 4]
+    assert operator.result == [5, 4]
+    assert actual == operator.result
 
 
-def test_evaluate_object():
-    pass
+def test_drop_function_when_Droping_more_values_than_exist():
+    operator = Drop()
+    actual = operator.function([1, 2, 3], 5)
+    assert actual == []
 
 
-def test_function():
-    #operator = Drop()
-    #operator.function()
-    pass
+def test_drop_function_when_Droping_zero_values():
+    operator = Drop()
+    actual = operator.function([1, 2, 3], 0)
+    assert actual == [1, 2, 3]
+
+
+def test_drop_function_with_invalid_iterable():
+    operator = Drop()
+    with pytest.raises(TypeError):
+        operator.function(1, 1)
+
+
+def test_drop_function_with_no_iterable():
+    operator = Drop()
+    with pytest.raises(TypeError):
+        operator.function(None, 1)

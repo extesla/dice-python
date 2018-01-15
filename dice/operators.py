@@ -171,7 +171,17 @@ class Advantage(Operator):
     2d20!adv
     2d20+5!advantage
     """
-    pass
+    def function(self, iterable):
+        result = sorted(iterable, reverse=True)[:1]
+        if result:
+            return result[0]
+        raise IndexError("Unable to select advantaged result from: {}".format(result))
+
+    def __repr__(self):
+        """
+        The ``Advantage`` operator has a custom __repr__.
+        """
+        return "Advantage({0})".format(*self.original_operands)
 
 
 # @operator(literal="!dis")

@@ -20,13 +20,14 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 from dice.operators import Advantage
+from dice.tokens import Dice
 import pytest
 
 
 def test_instantiate_advantage_operator():
-    operator = Advantage(5, 1)
-    assert operator.original_operands == (5,1)
-    assert operator.operands == (5,1)
+    operator = Advantage([5, 17])
+    assert operator.original_operands == ([5,17],)
+    assert operator.operands == ([5,17],)
 
 
 def test_repr():
@@ -38,19 +39,54 @@ def test_repr():
     When the method __repr__ is called
     Then the result should be "Advantage"
     """
-    operator = Advantage(5, 1)
-    assert repr(operator) == "Advantage(5, 1)"
+    operator = Advantage([5, 17])
+    assert repr(operator) == "Advantage([5, 17])"
 
 
-def test_evaluate():
-    pass
+def test_advantage_function_when_choosing_from_empty_array():
+    operator = Advantage()
+    with pytest.raises(IndexError):
+        operator.function([])
 
 
-def test_evaluate_object():
-    pass
+def test_advantage_function_with_invalid_iterable():
+    operator = Advantage()
+    with pytest.raises(TypeError):
+        operator.function(1)
 
 
-def test_function():
-    #operator = Advantage()
-    #operator.function()
-    pass
+def test_advantage_function_with_no_iterable():
+    operator = Advantage()
+    with pytest.raises(TypeError):
+        operator.function(None)
+
+
+def test_evaluate_advantage_with_single_value_in_scalar_array():
+    operator = Advantage([5, 17])
+    actual = operator.evaluate()
+
+    assert actual == 17
+    assert operator.result == 17
+    assert actual == operator.result
+
+
+def test_evaluate_advantage_with_multiple_values_in_scalar_array():
+    operator = Advantage([13, 5, 17])
+    actual = operator.evaluate()
+
+    assert actual == 17
+    assert operator.result == 17
+    assert actual == operator.result
+
+
+def test_evaluate_advantage_with_dice_token_value(mocker):
+    mock_random = mocker.patch("dice.tokens.mt_rand")
+    mock_random.side_effect = [5, 17]
+
+    dice_token = Dice(value="2d20", sides=20, rolls=2)
+    operator = Advantage(dice_token)
+    actual = operator.evaluate()
+
+    assert actual == 17
+    assert operator.result == 17
+    assert actual == operator.result

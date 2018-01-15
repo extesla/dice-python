@@ -194,7 +194,17 @@ class Disadvantage(Operator):
     2d20!dis
     2d20+5!disadvantage
     """
-    pass
+    def function(self, iterable):
+        result = sorted(iterable)[:1]
+        if result:
+            return result[0]
+        raise IndexError("Unable to select disadvantaged result from: {}".format(result))
+
+    def __repr__(self):
+        """
+        The ``Disadvantage`` operator has a custom __repr__.
+        """
+        return "Disadvantage({0})".format(*self.original_operands)
 
 
 # @operator(literal="!reroll")

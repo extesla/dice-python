@@ -76,21 +76,30 @@ class IntegerOperator(Operator):
 class Divide(IntegerOperator):
     function = operator.floordiv
 
+    def __str__(self):
+        return "{}".format("/".join(map(str, self.original_operands)))
+
 
 # @operator(literal="*")
 class Multiply(IntegerOperator):
     function = operator.mul
 
+    def __str__(self):
+        return "{}".format("*".join(map(str, self.original_operands)))
 
 # @operator(literal="-")
 class Subtract(IntegerOperator):
     function = operator.sub
 
+    def __str__(self):
+        return "{}".format("-".join(map(str, self.original_operands)))
 
 # @operator(literal="+")
 class Add(IntegerOperator):
     function = operator.add
 
+    def __str__(self):
+        return "{}".format("+".join(map(str, self.original_operands)))
 
 # @operator(literal="!total")
 class Total(Operator):

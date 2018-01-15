@@ -20,6 +20,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 from dice.operators import Drop
+from dice.tokens import Dice
 import pytest
 
 
@@ -34,11 +35,24 @@ def test_repr():
     assert repr(operator) == "Drop([5, 2, 1, 4], 2)"
 
 
-def test_evaluate():
+def test_evaluate_drop_with_scalar_values():
     operator = Drop([5, 2, 1, 4], 2)
     actual = operator.evaluate()
     assert actual == [5, 4]
     assert operator.result == [5, 4]
+    assert actual == operator.result
+
+
+def test_evaluate_drop_with_dice_token_values(mocker):
+    mock_random = mocker.patch("dice.tokens.mt_rand")
+    mock_random.side_effect = [2, 5, 1, 4, 3]
+
+    dice_token = Dice(value="5d6", sides=6, rolls=5)
+    operator = Drop(dice_token, 2)
+
+    actual = operator.evaluate()
+    assert actual == [5, 4, 3]
+    assert operator.result == [5, 4, 3]
     assert actual == operator.result
 
 

@@ -20,62 +20,25 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 from dice.operators import Keep
-import unittest
+import pytest
 
 
-class KeepOperatorTest(unittest.TestCase):
-    """
-    """
+def test_init():
+    operator = Keep(5, 1)
+    assert operator.original_operands == (5,1)
+    assert operator.operands == (5,1)
 
-    def test_init(self):
-        #: TBW
-        #:
-        #: Given
-        #: When
-        #: Then
-        operator = Keep(5, 1)
-        self.assertEqual(operator.original_operands, (5,1))
-        self.assertEqual(operator.operands, (5,1))
+def test_repr():
+    operator = Keep(5, 1)
+    assert repr(operator) == "Keep(5, 1)"
 
-    def test_repr(self):
-        #: TBW
-        #:
-        #: Given
-        #: When
-        #: Then
-        operator = Keep(5, 1)
-        self.assertEqual("Keep(5, 1)", str(operator))
+def test_evaluate():
+    pass
 
-    def test_evaluate(self):
-        #: TBW
-        #:
-        #: Given
-        #: When
-        #: Then
-        pass
+def test_evaluate_object():
+    pass
 
-    def test_evaluate_object(self):
-        #: TBW
-        #:
-        #: Given
-        #: When
-        #: Then
-        pass
-
-    def test_function(self):
-        #: TBW
-        #:
-        #: Given
-        #: When
-        #: Then
-        #operator = Keep()
-        #operator.function()
-        pass
-
-
-if __name__ == '__main__':
-    loader = unittest.TestLoader()
-    tests = loader.loadTestsFromTestCase(KeepOperatorTest)
-    suite = unittest.TestSuite(tests)
-
-    unittest.TextTestRunner(descriptions=True, verbosity=5).run(suite)
+def test_function():
+    #operator = Keep()
+    #operator.function()
+    pass

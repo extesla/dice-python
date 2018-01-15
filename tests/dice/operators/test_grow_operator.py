@@ -19,35 +19,30 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-from dice.tokens import Expression
-import unittest
+from dice.operators import Grow
+import pytest
 
 
-class ExpressionTest(unittest.TestCase):
-    """
-    """
-
-    def test_init(self):
-        #: TBW
-        #:
-        #: Given
-        #: When
-        #: Then
-        pass
-
-    def test_repr(self):
-        #: Test that the string representation of the operator is what is
-        #: expected.
-        #:
-        #: Given an instance of the Add operator on operands 5 and 1
-        #: When the method __repr__ is called
-        #: Then the result should be "Add(5, 1)"
-        pass
+def test_init():
+    operator = Grow(5, 1)
+    assert operator.original_operands == (5,1)
+    assert operator.operands == (5,1)
 
 
-if __name__ == '__main__':
-    loader = unittest.TestLoader()
-    tests = loader.loadTestsFromTestCase(ExpressionTest)
-    suite = unittest.TestSuite(tests)
+def test_repr():
+    operator = Grow(5, 1)
+    assert repr(operator) == "Grow(5, 1)"
 
-    unittest.TextTestRunner(descriptions=True, verbosity=5).run(suite)
+
+def test_evaluate():
+    pass
+
+
+def test_evaluate_object():
+    pass
+
+
+def test_function():
+    #operator = Grow()
+    #operator.function()
+    pass

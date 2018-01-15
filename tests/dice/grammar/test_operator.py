@@ -19,35 +19,34 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-from dice.tokens import Term
-import unittest
+from dice.grammar import operator
+from pyparsing import ParseException
+import pytest
 
 
-class TermTest(unittest.TestCase):
-    """
-    """
-
-    def test_init(self):
-        #: TBW
-        #:
-        #: Given
-        #: When
-        #: Then
-        pass
-
-    def test_repr(self):
-        #: Test that the string representation of the operator is what is
-        #: expected.
-        #:
-        #: Given an instance of the Add operator on operands 5 and 1
-        #: When the method __repr__ is called
-        #: Then the result should be "Add(5, 1)"
-        pass
+def test_operator_addition():
+    token = operator()
+    actual = token.parseString("+")
+    assert len(actual) == 1
+    assert actual[0] == "+"
 
 
-if __name__ == '__main__':
-    loader = unittest.TestLoader()
-    tests = loader.loadTestsFromTestCase(TermTest)
-    suite = unittest.TestSuite(tests)
+def test_operator_division():
+    token = operator()
+    actual = token.parseString("/")
+    assert len(actual) == 1
+    assert actual[0] == "/"
 
-    unittest.TextTestRunner(descriptions=True, verbosity=5).run(suite)
+
+def test_operator_multiplication():
+    token = operator()
+    actual = token.parseString("*")
+    assert len(actual) == 1
+    assert actual[0] == "*"
+
+
+def test_operator_subtraction():
+    token = operator()
+    actual = token.parseString("-")
+    assert len(actual) == 1
+    assert actual[0] == "-"

@@ -19,30 +19,33 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-from dice.grammar import integer
+from dice.grammar import dice_sides
 from pyparsing import ParseException
-import unittest
+import pytest
 
 
-class IntegerGrammarTest(unittest.TestCase):
-    """
-    """
-
-    def test_integer(self):
-        token = integer()
-        actual = token.parseString("1")
-        self.assertEqual(len(actual), 1)
-        self.assertEqual(actual[0], 1)
-
-    def test_integer_against_alpha(self):
-        with self.assertRaises(ParseException):
-            token = integer()
-            token.parseString("a")
+def test_dice_sides_fate():
+    token = dice_sides()
+    actual = token.parseString("fate")
+    assert len(actual) == 1
+    assert actual[0] == "fate"
 
 
-if __name__ == '__main__':
-    loader = unittest.TestLoader()
-    tests = loader.loadTestsFromTestCase(IntegerGrammarTest)
-    suite = unittest.TestSuite(tests)
+def test_dice_sides_fate_abbr():
+    token = dice_sides()
+    actual = token.parseString("F")
+    assert len(actual) == 1
+    assert actual[0] == "f"
 
-    unittest.TextTestRunner(descriptions=True, verbosity=5).run(suite)
+
+def test_dice_sides_numeric():
+    token = dice_sides()
+    actual = token.parseString("20")
+    assert len(actual) == 1
+    assert actual[0] == 20
+
+
+def test_dice_sides_against_alpha():
+    token = dice_sides()
+    with pytest.raises(ParseException):
+        token.parseString("invalid")

@@ -19,35 +19,29 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-from dice.tokens import Token
-import unittest
+from dice.factory import DiceFactory
+import pytest
 
 
-class TokenTest(unittest.TestCase):
-    """
-    """
-
-    def test_init(self):
-        #: TBW
-        #:
-        #: Given
-        #: When
-        #: Then
-        pass
-
-    def test_repr(self):
-        #: Test that the string representation of the operator is what is
-        #: expected.
-        #:
-        #: Given an instance of the Add operator on operands 5 and 1
-        #: When the method __repr__ is called
-        #: Then the result should be "Add(5, 1)"
-        pass
+def test_create():
+    factory = DiceFactory()
+    token = factory.create("1d6")
+    assert token.value == "1d6"
+    assert token.rolls == 1
+    assert token.sides == 6
 
 
-if __name__ == '__main__':
-    loader = unittest.TestLoader()
-    tests = loader.loadTestsFromTestCase(TokenTest)
-    suite = unittest.TestSuite(tests)
+def test_create_with_flag():
+    factory = DiceFactory()
+    token = factory.create("1d6!advantage")
+    assert token.value == "1d6"
+    assert token.rolls == 1
+    assert token.sides == 6
 
-    unittest.TextTestRunner(descriptions=True, verbosity=5).run(suite)
+
+def test_create_with_modifier():
+    factory = DiceFactory()
+    token = factory.create("1d6+2")
+    assert token.value == "1d6"
+    assert token.rolls == 1
+    assert token.sides == 6

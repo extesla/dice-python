@@ -19,43 +19,23 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-from dice.grammar import operator
-from pyparsing import ParseException
-import unittest
+from dice.tokens import Token
+import pytest
 
 
-class OperatorGrammarTest(unittest.TestCase):
+def test_initialize_token():
     """
     """
-
-    def test_operator_addition(self):
-        token = operator()
-        actual = token.parseString("+")
-        self.assertEqual(len(actual), 1)
-        self.assertEqual(actual[0], "+")
-
-    def test_operator_division(self):
-        token = operator()
-        actual = token.parseString("/")
-        self.assertEqual(len(actual), 1)
-        self.assertEqual(actual[0], "/")
-
-    def test_operator_multiplication(self):
-        token = operator()
-        actual = token.parseString("*")
-        self.assertEqual(len(actual), 1)
-        self.assertEqual(actual[0], "*")
-
-    def test_operator_subtraction(self):
-        token = operator()
-        actual = token.parseString("-")
-        self.assertEqual(len(actual), 1)
-        self.assertEqual(actual[0], "-")
+    pass
 
 
-if __name__ == '__main__':
-    loader = unittest.TestLoader()
-    tests = loader.loadTestsFromTestCase(OperatorGrammarTest)
-    suite = unittest.TestSuite(tests)
+def test_token_repr():
+    pass
 
-    unittest.TextTestRunner(descriptions=True, verbosity=5).run(suite)
+
+def test_token_str():
+    pass
+
+
+def test_evaluate_token():
+    pass

@@ -136,9 +136,26 @@ class Drop(Operator):
 # @operator(literal="!take")
 class Keep(Operator):
     """
-    Operator to keep the ``n`` highest dice rolls. E.g. ``3d6 keep 1``
+    Operator to keep the ``n`` number of highest scores.
+
+    The keep operator will retain the highest ``n`` values in an iterable
+    dropping the rest. The expression ``3d6!keep(2)`` reads as: "roll 3d6 and
+    keep the two highest dice rolls".
+
+    The operator literal, ``!keep`` takes a single argument indicating the
+    number of values to keep.
+
+    >>> operator = Keep([5, 2, 8], 2)
+    >>> operator.evaluate()
+    [8, 5]
     """
     def function(self, iterable, n):
+        #: If we're indicating that we don't want to keep anything (!keep(0))
+        #: or we want to keep fewer than nothing (!keep(-2)) then we should
+        #: just short circuit out of this and return an empty array.
+        if n <= 0:
+            return []
+
         for die in sorted(iterable)[:-n]:
             iterable.remove(die)
         return iterable

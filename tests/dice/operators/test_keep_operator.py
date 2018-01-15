@@ -23,22 +23,44 @@ from dice.operators import Keep
 import pytest
 
 
-def test_init():
-    operator = Keep(5, 1)
-    assert operator.original_operands == (5,1)
-    assert operator.operands == (5,1)
+def test_instantiate_Keep_operator():
+    operator = Keep([5, 2, 1, 4], 2)
+    assert operator.original_operands == ([5, 2, 1, 4], 2)
+    assert operator.operands == ([5, 2, 1, 4], 2)
+
 
 def test_repr():
-    operator = Keep(5, 1)
-    assert repr(operator) == "Keep(5, 1)"
+    operator = Keep([5, 2, 1, 4], 2)
+    assert repr(operator) == "Keep([5, 2, 1, 4], 2)"
+
 
 def test_evaluate():
-    pass
+    operator = Keep([5, 2, 1, 4], 2)
+    actual = operator.evaluate()
+    assert actual == [5, 4]
+    assert operator.result == [5, 4]
+    assert actual == operator.result
 
-def test_evaluate_object():
-    pass
 
-def test_function():
-    #operator = Keep()
-    #operator.function()
-    pass
+def test_keep_function_when_keeping_more_values_than_exist():
+    operator = Keep()
+    actual = operator.function([1, 2, 3], 5)
+    assert actual == [1, 2, 3]
+
+
+def test_keep_function_when_keeping_zero_values():
+    operator = Keep()
+    actual = operator.function([1, 2, 3], 0)
+    assert actual == []
+
+
+def test_keep_function_with_invalid_iterable():
+    operator = Keep()
+    with pytest.raises(TypeError):
+        operator.function(1, 1)
+
+
+def test_keep_function_with_no_iterable():
+    operator = Keep()
+    with pytest.raises(TypeError):
+        operator.function(None, 1)

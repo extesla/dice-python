@@ -60,7 +60,8 @@ class Operator(Token):
 
     def evaluate(self):
         self.operands = map(self.evaluate_object, self.operands)
-        return self.function(*self.operands)
+        self.result = self.function(*self.operands)
+        return self.result
 
     @property
     def function(self):

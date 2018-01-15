@@ -168,15 +168,17 @@ class Dice(Term):
         self.value = value
 
     def __repr__(self):
-        return "Dice({0!r})".format(self.value)
+        return "Dice(value={0!r})".format(self.value)
 
     def __str__(self):
         return "{0!s}d{1!s}".format(self.rolls, self.sides)
 
     def evaluate(self):
-        self.result = self.roll(self.rolls, self.sides)
+        """
+        Alias for ``roll``.
+        """
+        self.result = self.roll()
         return self.result
 
-    @staticmethod
-    def roll(rolls, sides):
-        return [mt_rand(min=1, max=sides) for i in range(rolls)]
+    def roll(self):
+        return [mt_rand(min=1, max=self.sides) for i in range(self.rolls)]

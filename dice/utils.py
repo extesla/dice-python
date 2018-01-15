@@ -47,6 +47,7 @@ def mt_rand(min, max):
         raise TypeError("Random requires a maximum boundary. Given: None")
     return random.randint(min, max)
 
+
 def to_int(obj, default=0):
     """
     Value-safe conversion of an object to an ``int``. If the ``obj`` being

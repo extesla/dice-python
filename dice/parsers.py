@@ -40,10 +40,18 @@ class DiceParser(TokenParser):
     in a passed string.
     """
 
+    def high(self, string):
+        pass
+
+    def low(self, string):
+        pass
+
     def match(self, subject):
         """
-        Return the first dice term literal from the given ``subject``. If no
-        dice term literal exists in the ``subject`` raise a ``ValueError``.
+        Return the first dice term literal from the given ``subject``.
+
+        If no dice term literal exists in the ``subject`` raise a
+        ``ValueError``.
 
         :param subject: the string with the dice term literal.
         :type subject: str
@@ -60,6 +68,9 @@ class DiceParser(TokenParser):
         if match is None:
             raise ValueError(str.format("Invalid dice term literal: {0}", subject))
         return str(match.group("term"))
+
+    def mean(self, string):
+        pass
 
     def parse(self, string):
         """
@@ -86,13 +97,13 @@ class DiceParser(TokenParser):
         Return regular expression pattern that selects the first valid dice
         roll term in a string sequence.
         """
-        pattern = [
-                   r"^.*?",                        #: Skip characters (non-greedy)
-                   r"(?P<term>\d*[dD][\dF]+){1}",  #: Matches the first proper
-                                                   #: dice term pattern
-                   r".*?$"                         #: Skip characters (non-greedy)
-                  ]
-        return "".join(pattern)
+        pattern = (
+            r"^.*?"                        #: Skip characters (non-greedy)
+            r"(?P<term>\d*[dD][\dF]+){1}"  #: Matches the first proper
+                                            #: dice term pattern
+            r".*?$"                         #: Skip characters (non-greedy)
+        )
+        return pattern
 
     def trim(self, string):
         return self.match(string)

@@ -38,12 +38,18 @@ class Token(object):
     :type result: mixed
     """
 
-    #: The value of the token--this represents the original immutable value
-    #: supplied to the token at the time of instantiation.
-    value = None
-
     #: The result of a token's evaluation.
     result = None
+
+    def __init__(self, *args, **kwargs):
+        #: This is a convenient way that we can make all of our tokens
+        #: effectively factories for themselves. This will iterate over all
+        #: of the keyword arguments passed into the token's constructor and
+        #: assign them, assuming that a property exists for that property
+        #: name. [SWQ]
+        for prop, value in kwargs.iteritems():
+            if hasattr(self, prop):
+                setattr(self, prop, value)
 
     def evaluate(self):
         """
@@ -187,27 +193,25 @@ class Dice(Term):
     :param sides: the righthand side of the dice term, indicating the number
         of sides that the dice has.
     :type sides: int
-    :param value: the value of the dice term, including both left and
-        righthand sides.
-    :type value: str
     """
 
-    def __init__(self, value=None, rolls=None, sides=None):
-        #: The number of times that a dice will be rolled. This is the
-        #: lefthand side of the dice term, i.e. the number that precedes the
-        #: side identifier (e.g. "d6").
-        self.rolls = rolls
+    #: The number of times that a dice will be rolled. This is the
+    #: lefthand side of the dice term, i.e. the number that precedes the
+    #: side identifier (e.g. "d6").
+    #:
+    #: (Default: 1)
+    rolls = None
 
-        #: The number of sides for a dice. This is the righthand side of the
-        #: dice term, e.g. "d6".
-        self.sides = sides
+    #: The number of sides for a dice. This is the righthand side of the
+    #: dice term, e.g. "d6".
+    sides = None
 
-        #: The value of the dice term, including both the rolls and sides,
-        #: e.g. "1d6", "3d6", "2d20", etc.
-        self.value = value
+    def __eq__(self, other):
+        return (self.sides == other.sides
+            and self.rolls == other.rolls)
 
     def __repr__(self):
-        return "Dice(value={0!r})".format(self.value)
+        return "Dice(rolls={0!r}, sides={1!r})".format(self.rolls, self.sides)
 
     def __str__(self):
         return "{0!s}d{1!s}".format(self.rolls, self.sides)

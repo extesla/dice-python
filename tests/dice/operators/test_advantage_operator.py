@@ -83,7 +83,7 @@ def test_evaluate_advantage_with_dice_token_value(mocker):
     mock_random = mocker.patch("dice.tokens.mt_rand")
     mock_random.side_effect = [5, 17]
 
-    dice_token = Dice(value="2d20", sides=20, rolls=2)
+    dice_token = Dice(sides=20, rolls=2)
     operator = Advantage(dice_token)
     actual = operator.evaluate()
 

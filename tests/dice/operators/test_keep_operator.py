@@ -47,7 +47,7 @@ def test_evaluate_keep_with_dice_token_values(mocker):
     mock_random = mocker.patch("dice.tokens.mt_rand")
     mock_random.side_effect = [2, 5, 1, 4, 3]
 
-    dice_token = Dice(value="5d6", sides=6, rolls=5)
+    dice_token = Dice(sides=6, rolls=5)
     operator = Keep(dice_token, 2)
 
     actual = operator.evaluate()

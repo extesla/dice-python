@@ -23,8 +23,7 @@ from dice.tokens import Dice
 import pytest
 
 def test_initialize_dice():
-    token = Dice(value="1d6", rolls=1, sides=6)
-    assert token.value == "1d6"
+    token = Dice(rolls=1, sides=6)
     assert token.rolls == 1
     assert token.sides == 6
     assert token.result is None
@@ -36,10 +35,10 @@ def test_dice_repr():
 
     Given an instance of the Dice token with the value "1d6"
     When the method __repr__ is called
-    Then the result should be "Dice(value=1d6)"
+    Then the result should be "Dice(rolls=1, sides=6)"
     """
-    token = Dice(value="1d6", rolls=1, sides=6)
-    assert repr(token) == "Dice(value='1d6')"
+    token = Dice(rolls=1, sides=6)
+    assert repr(token) == "Dice(rolls=1, sides=6)"
 
 def test_dice_str():
     """
@@ -50,14 +49,14 @@ def test_dice_str():
     When the method __str__ is called
     Then the result should be "1d6"
     """
-    token = Dice(value="1d6", rolls=1, sides=6)
+    token = Dice(rolls=1, sides=6)
     assert str(token) == "1d6"
 
 def test_dice_evaluate(mocker):
     mock_mt_rand = mocker.patch("dice.tokens.mt_rand")
     mock_mt_rand.return_value = 4
 
-    token = Dice(value="1d6", rolls=1, sides=6)
+    token = Dice(rolls=1, sides=6)
     actual = token.evaluate()
 
     assert len(actual) == 1
@@ -70,7 +69,7 @@ def test_dice_roll():
     mock_mt_rand = mocker.patch("dice.tokens.mt_rand")
     mock_mt_rand.return_value = 4
 
-    token = Dice(value="1d6", rolls=1, sides=6)
+    token = Dice(rolls=1, sides=6)
     actual = token.roll()
 
     assert len(actual) == 1

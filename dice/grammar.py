@@ -19,36 +19,65 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-from dice.tokens import Integer
-from pyparsing import (CaselessLiteral, Literal, Optional, StringStart, StringEnd, Word, nums)
-#: Empty
+from dice.tokens import Dice, Expression, Integer
+from pyparsing import (
+    CaselessLiteral,
+    Group,
+    Literal,
+    Optional,
+    StringStart,
+    StringEnd,
+    Word,
+    nums
+)
+import logging
 
+#: Module logger
+logger = logging.getLogger(__name__)
 
 def dice():
-    token = Optional(integer()) + CaselessLiteral("d") + dice_sides()
+    """
+    Return a compiled parsing token for dice roll notations.
+
+    :return: The compiled parsing token for dice roll notation, e.g. 1d6.
+    """
+    def transformer(string, location, tokens):
+        logger.debug(("Transforming parsed text: `{}` into Dice token with "
+            "the following parts: {}").format(string, str(tokens)))
+        return Dice(rolls=tokens[0], sides=tokens[2])
+
+    token = Optional(integer(), default=1) + CaselessLiteral("d") + dice_sides()
     token.setName("dice")
+    token.setParseAction(transformer)
     token.setResultsName("dice")
     return token
 
 
 def dice_sides():
-    token = integer()\
-          | CaselessLiteral("fate") \
-          | CaselessLiteral("f")
-          #| StringStart() + CaselessLiteral("f") + StringEnd() \
-          #| StringStart() + CaselessLiteral("fate") + StringEnd()
+    token = (
+        integer()
+        | CaselessLiteral("fate")
+        | CaselessLiteral("f")
+        #| StringStart() + CaselessLiteral("f") + StringEnd() \
+        #| StringStart() + CaselessLiteral("fate") + StringEnd()
+    )
     token.setResultsName("dice_sides")
     return token
 
 
 def expression():
+    def transformer(string, location, tokens):
+        logger.debug(("Transforming parsed text: `{}` into Expression token "
+            "with the following parts: {}").format(string, str(tokens)))
+        return Expression(_raw_text=string, tokens=tokens)
     token = Optional(Literal("(")) + term() + Optional(Literal(")"))
     token.setName("expression")
+    token.setParseAction(transformer)
+    token.setResultsName("expression")
     return token
 
 
 def flags():
-
     token = (
         CaselessLiteral("!advantage")
         | CaselessLiteral("!adv")
@@ -83,12 +112,12 @@ def operator():
 def term():
     """
     """
-    token = StringStart() + dice() + StringEnd() \
-          | StringStart() + dice() + operator() + integer() + StringEnd() \
-          | StringStart() + dice() + flags() + StringEnd() \
-          | StringStart() + dice() + flags() + operator() + integer() + StringEnd()
+    token = (
+        StringStart() + dice() + StringEnd()
+      | StringStart() + dice() + operator() + integer() + StringEnd()
+      | StringStart() + dice() + flags() + StringEnd()
+      | StringStart() + dice() + flags() + operator() + integer() + StringEnd()
+    )
     token.setName("term")
     token.setResultsName("term")
     return token
-
-

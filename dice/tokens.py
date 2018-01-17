@@ -27,45 +27,6 @@ import re
 logger = logging.getLogger(__name__)
 
 
-class Expression(object):
-    """
-    An ``Expression`` is the model of an entire dice roll, including terms,
-    operators, and interior expressions.
-
-    An expression can be a simple command such as roll a six-sided die once,
-    e.g.::
-
-      1d6
-
-    It can be a compound command modifying a dice roll such as roll a
-    twenty-sided die once and add five to result, e.g.::
-
-      1d20+5
-
-    Or it can be an arbitrarily more complex command: roll two twenty-sided
-    dice and add five to the result, take the higher of the two and add the
-    result of the roll of two six-sided dice rerolling 1's and 2's, e.g.::
-
-      (2d20+5)!advantage + (2d6!reroll(1,2))
-
-    :param subexpressions:
-    :type subexpressions: list
-    :param tokens:
-    :type tokens: list
-    """
-
-    def __init__(self):
-        #:
-        self.subexpressions = []
-
-        #: The terms
-        self.tokens = []
-
-        #: The value of the expression.
-        self.value = value
-        pass
-
-
 class Token(object):
     """
     A ``Token`` is any discrete element of an expression. Tokens can be a
@@ -114,6 +75,92 @@ class Token(object):
         if cls is not None:
             obj = cls(obj)
         return obj
+
+
+class Expression(Token):
+    """
+    An ``Expression`` is the model of an entire dice roll, including terms,
+    operators, and interior expressions.
+
+    An expression can be a simple command such as roll a six-sided die once,
+    e.g.::
+
+      1d6
+
+    Represented as an actual ``Expression`` object, this might look like::
+
+      Expression(tokens=[
+          Dice(sides=6, rolls=1)
+      ])
+
+    It can be a compound command modifying a dice roll such as roll a
+    twenty-sided die once and add five to result, e.g.::
+
+      1d20+5
+
+    Represented as an actual ``Expression`` object, this might look like::
+
+      Expression(tokens=[
+          Add(
+            Dice(sides=20, rolls=1),
+            Integer(5)
+          )
+      ])
+
+    Or it can be an arbitrarily more complex command: roll two twenty-sided
+    dice and add five to the result, take the higher of the two and add the
+    result of the roll of two six-sided dice rerolling 1's and 2's, e.g.::
+
+      (2d20+5)!advantage + 1d4;2d6!reroll(1,2)
+
+    Represented as an actual ``Expression`` object, this might look like::
+
+      Expression(tokens=[
+          Expression(tokens=[
+              Add(
+                  Advantage(
+                      Add(
+                          Dice(sides=20, rolls=1),
+                          Integer(5)
+                      )
+                  ),
+                  Dice(sides=4, rolls=1)
+              )
+          ]),
+          Expression(tokens=[
+              Reroll(
+                  Dice(sides=6, rolls=2),
+                  [1, 2]
+              )
+          ])
+      ])
+
+    An expression is typically built by using an :class:`ExpressionParser` to
+    convert a string into the arbitrarily complex representation of a dice
+    expression.
+
+    :param raw_text: The text of the expression, this is the exact string that
+        was parsed to create the expression.
+    :type text: str
+    :param tokens:
+    :type tokens: list
+    """
+
+    #: The raw text representing this expression. This is the original, and
+    #: effectively immutable value that was parsed to result in the expression
+    #: to be evaluated.
+    _raw_text = None
+
+    #: The tokens, including subexpressions, that compose this expression.
+    tokens = []
+
+    @property
+    def raw_text(self):
+        return self._raw_text
+
+    @raw_text.setter
+    def raw_text(self, value):
+        raise RuntimeError("Expression's raw text is immutable.")
 
 
 class Term(Token):

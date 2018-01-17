@@ -176,14 +176,6 @@ class Term(Token):
     pass
 
 
-class Integer(int, Term):
-    """A wrapper around the int class"""
-
-    @classmethod
-    def parse(cls, string, location, tokens):
-        return cls(tokens[0])
-
-
 class Dice(Term):
     """
     The ``Dice`` term is a representation of a group of dice to be rolled,
@@ -229,3 +221,11 @@ class Dice(Term):
 
     def roll(self):
         return [mt_rand(min=1, max=self.sides) for i in range(self.rolls)]
+
+
+class Integer(int, Term):
+    """A wrapper around the int class"""
+
+    @classmethod
+    def parse(cls, string, location, tokens):
+        return cls(tokens[0])

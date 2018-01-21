@@ -61,7 +61,6 @@ def dice_sides():
         #| StringStart() + CaselessLiteral("f") + StringEnd() \
         #| StringStart() + CaselessLiteral("fate") + StringEnd()
     )
-    token.setResultsName("dice_sides")
     return token
 
 
@@ -73,7 +72,6 @@ def expression():
     token = Optional(Literal("(")) + term() + Optional(Literal(")"))
     token.setName("expression")
     token.setParseAction(transformer)
-    token.setResultsName("expression")
     return token
 
 
@@ -105,7 +103,6 @@ def integer():
 def operator():
     token = Literal("+") | Literal("-") | Literal("/") | Literal("*")
     token.setName("operator")
-    token.setResultsName("operator")
     return token
 
 
@@ -119,5 +116,4 @@ def term():
       | StringStart() + dice() + flags() + operator() + integer() + StringEnd()
     )
     token.setName("term")
-    token.setResultsName("term")
     return token

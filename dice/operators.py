@@ -126,6 +126,8 @@ class Add(IntegerOperator):
 
 # @operator(literal="!total")
 class Total(Operator):
+    """
+    """
     function = sum
 
 
@@ -146,9 +148,7 @@ class Drop(Operator):
     [8]
     """
     def function(self, iterable, n):
-        for die in sorted(iterable)[:n]:
-            iterable.remove(die)
-        return iterable
+        return sorted(iterable)[n:]
 
     def literal(self):
         return "drop"
@@ -169,7 +169,7 @@ class Keep(Operator):
 
     >>> operator = Keep([5, 2, 8], 2)
     >>> operator.evaluate()
-    [8, 5]
+    [5, 8]
     """
     def function(self, iterable, n):
         #: If we're indicating that we don't want to keep anything (!keep(0))
@@ -177,10 +177,7 @@ class Keep(Operator):
         #: just short circuit out of this and return an empty array.
         if n <= 0:
             return []
-
-        for die in sorted(iterable)[:-n]:
-            iterable.remove(die)
-        return iterable
+        return sorted(iterable)[-n:]
 
 
 # @operator(literal="!adv")

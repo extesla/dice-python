@@ -100,7 +100,19 @@ class Multiply(IntegerOperator):
 
 # @operator(literal="-")
 class Subtract(IntegerOperator):
-    function = operator.sub
+    def function(self, minuend, subtrahend):
+        """
+        Subtracts the subtrahend from the minuend.
+
+        :param minuend: Left hand value of the operation.
+        :type minuend: int
+        :param minuend: Right hand value of the operation.
+        :return: The result of the difference from the given values.
+        """
+        result = operator.sub(minuend, subtrahend)
+        if result < 1:
+            return 1
+        return result
 
     def __str__(self):
         return "{}".format("-".join(map(str, self.original_operands)))

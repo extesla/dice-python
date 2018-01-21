@@ -78,11 +78,11 @@ def dice_sides():
 
 
 def expression():
+    """
+    """
     def transformer(string, location, tokens):
-        logger.debug(("Transforming parsed text: `{}` into Expression token "
-            "with the following parts: {}").format(string, str(tokens)))
-        return Expression(_raw_text=string, tokens=tokens)
-    token = Optional(Literal("(")) + term() + Optional(Literal(")"))
+        return tokens.asList()
+    token = OneOrMore(term())
     token.setName("expression")
     token.setParseAction(transformer)
     return token

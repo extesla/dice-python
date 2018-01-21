@@ -22,6 +22,7 @@
 from dice.utils import classname, mt_rand
 import logging
 import re
+import six
 
 #: The module logger.
 logger = logging.getLogger(__name__)
@@ -47,7 +48,7 @@ class Token(object):
         #: of the keyword arguments passed into the token's constructor and
         #: assign them, assuming that a property exists for that property
         #: name. [SWQ]
-        for prop, value in kwargs.iteritems():
+        for prop, value in six.iteritems(kwargs):
             if hasattr(self, prop):
                 setattr(self, prop, value)
 

@@ -14,4 +14,5 @@ pytest-mock = "==1.6.3"
 
 [packages]
 
-pyparsing = "==2.2.0"
+pyparsing = ">=2.2.0"
+six = "==1.11.0"

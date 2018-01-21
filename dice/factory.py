@@ -40,4 +40,4 @@ class DiceFactory(object):
         """
         parser = DiceParser()
         term, rolls, sides = parser.parse(string)
-        return Dice(value=term, rolls=rolls, sides=sides)
+        return Dice(rolls=rolls, sides=sides)

@@ -26,7 +26,6 @@ import pytest
 def test_create():
     factory = DiceFactory()
     token = factory.create("1d6")
-    assert token.value == "1d6"
     assert token.rolls == 1
     assert token.sides == 6
 
@@ -34,7 +33,6 @@ def test_create():
 def test_create_with_flag():
     factory = DiceFactory()
     token = factory.create("1d6!advantage")
-    assert token.value == "1d6"
     assert token.rolls == 1
     assert token.sides == 6
 
@@ -42,6 +40,5 @@ def test_create_with_flag():
 def test_create_with_modifier():
     factory = DiceFactory()
     token = factory.create("1d6+2")
-    assert token.value == "1d6"
     assert token.rolls == 1
     assert token.sides == 6

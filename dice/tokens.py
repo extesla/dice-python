@@ -65,7 +65,9 @@ class Token(object):
         Wraps evaluate(), caching results
         """
         if not hasattr(self, 'results') or self.results is None:
+            self.evaluate()
         logger.debug(str.format("Evaluating: {0} -> {1}", str(self), str(self.results)))
+        return self
 
     def evaluate_object(self, obj, cls=None):
         """
@@ -206,9 +208,16 @@ class Dice(Term):
     #: dice term, e.g. "d6".
     sides = None
 
+    #: The total, summed, value of the evaluation results.
+    total = 0
+
     def __eq__(self, other):
         return (self.sides == other.sides
             and self.rolls == other.rolls)
+
+    def __iter__(self):
+        for x in self.results:
+            yield x
 
     def __repr__(self):
         return "Dice(rolls={0!r}, sides={1!r})".format(self.rolls, self.sides)
@@ -220,8 +229,9 @@ class Dice(Term):
         """
         Alias for ``roll``.
         """
-        self.result = self.roll()
-        return self.result
+        self.results = self.roll()
+        self.total = sum(self.results)
+        return self
 
     def roll(self):
         return [mt_rand(min=1, max=self.sides) for i in range(self.rolls)]

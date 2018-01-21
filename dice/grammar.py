@@ -38,25 +38,35 @@ import logging
 #: Module logger
 logger = logging.getLogger(__name__)
 
+
 def dice():
     """
-    Return a compiled parsing token for dice roll notations.
+    Return the Backus-Naur form (BNF) of the dice grammar.
 
-    :return: The compiled parsing token for dice roll notation, e.g. 1d6.
+    :return: The BNF grammar for dice roll notation, e.g. 1d6.
     """
     def transformer(string, location, tokens):
         logger.debug(("Transforming parsed text: `{}` into Dice token with "
             "the following parts: {}").format(string, str(tokens)))
-        return Dice(rolls=tokens[0], sides=tokens[2])
+        return Dice(rolls=tokens["dice_rolls"], sides=tokens["dice_sides"])
 
-    token = Optional(integer(), default=1) + CaselessLiteral("d") + dice_sides()
-    token.setName("dice")
-    token.setParseAction(transformer)
-    token.setResultsName("dice")
-    return token
+    #: Create the sub-symbols (rolls and sides) for the dice grammar.
+    rolls = Optional(integer(), default=1).setResultsName("dice_rolls")
+    sides = dice_sides().setResultsName("dice_sides")
+
+    symbol = (rolls + CaselessLiteral("d") + sides)
+    symbol.setName("dice")
+    symbol.setParseAction(transformer)
+    return symbol
 
 
 def dice_sides():
+    """
+    Return the Backus-Naur form (BNF) of the grammar describing the number of
+    sides for a die.
+
+    :return: The BNF grammar for the number of sides of a dice, e.g. 6.
+    """
     token = (
         integer()
         | CaselessLiteral("fate")

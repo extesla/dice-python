@@ -20,7 +20,6 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 from dice.grammar import flags
-from pprint import pprint
 from pyparsing import (ParseException, StringStart, StringEnd)
 import pytest
 

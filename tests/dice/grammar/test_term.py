@@ -21,7 +21,6 @@
 # IN THE SOFTWARE.
 from dice.grammar import term
 from dice.tokens import Dice
-from pprint import pprint
 from pyparsing import ParseException
 import pytest
 

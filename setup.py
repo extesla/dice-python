@@ -1,24 +1,7 @@
+from setuptools import setup
 import os
 import sys
 
-py_version = sys.version_info[:2]
-
-if py_version < (2, 6):
-    raise RuntimeError("On Python 2, dice-python requires Python 2.6 or later")
-elif (3, 0) < py_version < (3, 2):
-    raise RuntimeError("On Python 3, dice-python requires Python 3.2 or later")
-
-requires = []
-tests_require = []
-if py_version < (3, 3):
-    tests_require.append("mock")
-
-testing_extras = tests_require + [
-    "nose",
-    "nose-cov",
-    ]
-
-from setuptools import setup, find_packages
 here = os.path.abspath(os.path.dirname(__file__))
 try:
     README = open(os.path.join(here, "README.md")).read()
@@ -40,23 +23,20 @@ CLASSIFIERS = [
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python",
     "Programming Language :: Python :: 2",
-    "Programming Language :: Python :: 2.6",
     "Programming Language :: Python :: 2.7",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.2",
     "Programming Language :: Python :: 3.3",
     "Programming Language :: Python :: 3.4",
     "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
     "Topic :: System :: Monitoring",
     "Topic :: System :: Utilities",
 ]
 
-version_txt = os.path.join(here, "dice/version.txt")
-dicepy_version = open(version_txt).read().strip()
-
 dist = setup(
     name="dice-python",
-    version=dicepy_version,
+    version='0.5.0-dev',
     license="MIT License (http://opensource.org/licenses/MIT)",
     url="https://github.com/extesla/dice-python/",
     description="A dice rolling library",
@@ -64,15 +44,19 @@ dist = setup(
     classifiers=CLASSIFIERS,
     author="Sean W. Quinn",
     author_email="sean.quinn@extesla.com",
-    maintainer="Sean W. Quinn",
-    maintainer_email="sean.quinn@extesla.com",
-    packages=find_packages(),
-    install_requires=requires,
+    packages=["dice"],
+    install_requires=[
+        "pyparsing>=2.2.0",
+        "six==1.11.0"
+    ],
     extras_require={
-        "testing": testing_extras,
-        },
-    tests_require=tests_require,
+        "dev": [
+            "pytest==3.3.2",
+            "pytest-cov==2.5.1"
+            "pytest-mock==1.6.3"
+        ],
+    },
     include_package_data=True,
     zip_safe=False,
-    test_suite="test",
+    test_suite="tests",
 )

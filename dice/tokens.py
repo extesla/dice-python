@@ -39,7 +39,7 @@ class Token(object):
     """
 
     #: The result of a token's evaluation.
-    result = None
+    results = None
 
     def __init__(self, *args, **kwargs):
         #: This is a convenient way that we can make all of our tokens
@@ -64,10 +64,8 @@ class Token(object):
         """
         Wraps evaluate(), caching results
         """
-        if not hasattr(self, 'result') or self.result is None:
-            self.result = self.evaluate()
-        logger.debug(str.format("Evaluating: {0} -> {1}", str(self), str(self.result)))
-        return self.result
+        if not hasattr(self, 'results') or self.results is None:
+        logger.debug(str.format("Evaluating: {0} -> {1}", str(self), str(self.results)))
 
     def evaluate_object(self, obj, cls=None):
         """
@@ -156,6 +154,8 @@ class Expression(Token):
     #: effectively immutable value that was parsed to result in the expression
     #: to be evaluated.
     _raw_text = None
+
+    results = []
 
     #: The tokens, including subexpressions, that compose this expression.
     tokens = []

@@ -113,6 +113,26 @@ def integer():
     return token
 
 
+def operand():
+    """
+    The Backus-Naur form (BNF) of the grammar defining an ``operand``.
+
+    An operand, in its simplest definition, is any dice or numeric BNF grammar
+    that can be operated on.
+
+    :return: The operand BNF.
+    """
+    token = (
+        dice()
+        ^ Group(dice() + flags())
+        ^ integer()
+    )
+    #token = (Group(dice() + Optional(flags()))) | integer()
+    token.setName("operand")
+    token.setResultsName("operand")
+    return token
+
+
 def operator():
     token = Literal("+") | Literal("-") | Literal("/") | Literal("*")
     token.setName("operator")
@@ -123,10 +143,8 @@ def term():
     """
     """
     token = (
-        StringStart() + dice() + StringEnd()
-      | StringStart() + dice() + operator() + integer() + StringEnd()
-      | StringStart() + dice() + flags() + StringEnd()
-      | StringStart() + dice() + flags() + operator() + integer() + StringEnd()
+        StringStart() + operand() + StringEnd()
+        ^ StringStart() + Group(operand() + operator() + operand()) + StringEnd()
     )
     token.setName("term")
     return token

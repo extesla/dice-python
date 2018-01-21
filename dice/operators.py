@@ -235,10 +235,10 @@ class Reroll(Operator):
 
     E.g.::
 
-    1d20!reroll 1
-    1d20+5!reroll 1,2
-    1d20+5!reroll 1-5
-    1d20+5!reroll 1,2,18-20
+    1d20!reroll(1)
+    1d20!reroll(1,2)+5
+    1d20!reroll(1-5)+5
+    1d20!reroll(1,2,18-20)+5
     """
     pass
 
@@ -249,7 +249,7 @@ class Grow(Operator):
 
     E.g.::
 
-    1d20!grow 1
+    1d20!grow(1)
     """
     pass
 
@@ -260,6 +260,6 @@ class Shrink(Operator):
 
     E.g.::
 
-    1d20!shrink 1
+    1d20!shrink(1)
     """
     pass

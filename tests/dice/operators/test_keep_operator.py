@@ -38,8 +38,8 @@ def test_repr():
 def test_evaluate_keep_with_scalar_values():
     operator = Keep([5, 2, 1, 4], 2)
     actual = operator.evaluate()
-    assert actual == [5, 4]
-    assert operator.result == [5, 4]
+    assert actual == [4, 5]
+    assert operator.result == [4, 5]
     assert actual == operator.result
 
 
@@ -51,8 +51,8 @@ def test_evaluate_keep_with_dice_token_values(mocker):
     operator = Keep(dice_token, 2)
 
     actual = operator.evaluate()
-    assert actual == [5, 4]
-    assert operator.result == [5, 4]
+    assert actual == [4, 5]
+    assert operator.result == [4, 5]
     assert actual == operator.result
 
 

@@ -28,11 +28,8 @@ import pytest
 def test_expression_grammar():
     grammar = expression()
     actual = grammar.parseString("1d6")
-    expected = Expression(_raw_text="1d6", tokens=[
-        Dice(rolls=1, sides=6)
-    ])
+    expected = [Dice(rolls=1, sides=6)]
 
     assert actual is not None
     assert len(actual) == 1
-    assert actual[0].raw_text == expected.raw_text
-    assert actual[0].tokens[0] == Dice(rolls=1, sides=6)
+    assert actual[0] == Dice(rolls=1, sides=6)

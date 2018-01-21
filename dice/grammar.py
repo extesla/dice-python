@@ -19,16 +19,19 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
+from dice.operators import Add, Subtract, Divide, Multiply
 from dice.tokens import Dice, Expression, Integer
 from pyparsing import (
     CaselessLiteral,
     Group,
     Literal,
+    OneOrMore,
     Optional,
     StringStart,
     StringEnd,
     Word,
-    nums
+    nums,
+    ZeroOrMore,
 )
 import logging
 

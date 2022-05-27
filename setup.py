@@ -35,7 +35,7 @@ CLASSIFIERS = [
 ]
 
 dist = setup(
-    name="dice-python",
+    name="dice",
     version='0.5.0-dev',
     license="MIT License (http://opensource.org/licenses/MIT)",
     url="https://github.com/extesla/dice-python/",

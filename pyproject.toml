@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "dice"
+version = "0.5.0-dev"
+license = "MIT"
+description = "The dice library is a robust dice rolling library."
+readme = "README.md"
+authors = ["Sean Quinn <noreply@extesla.com>"]
+maintainers = ["Extesla, LLC <opensource@extesla.com>", "Zack Root"]
+homepage = "https://github.com/extesla/dice-python"
+repository = "https://github.com/extesla/dice-python"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Games/Entertainment",
+    "Topic :: Games/Entertainment :: Board Games",
+    "Topic :: Games/Entertainment :: Role-Playing",
+    "Topic :: Games/Entertainment :: Turn Based Strategy",
+    "Topic :: Text Processing",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pyparsing = "^3.0.9"
+six = "^1.16.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.2"
+pytest-cov = "^3.0.0"
+pytest-mock = "^3.7.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

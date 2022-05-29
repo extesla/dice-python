@@ -26,22 +26,27 @@ def handle_flags(flag, expr):
     return t.evaluate()
 
 
-def handle_operator(op, left, right):
-    left_type = type(left)
-    if left_type == type([]):
-        left = evaluate(left)
-    elif left_type is Integer:
-        left = int(left.evaluate())
-    elif left_type is Dice:
-        left = (left.evaluate()).total
+def handle_operand(operand):
+    """Evaluates an operand on either the left or right of an operator.
+    """
+    operand_type = type(operand)
+    if operand_type == type([]):
+        result = evaluate(operand)
+    elif operand_type is Integer:
+        result = int(operand.evaluate())
+    elif operand_type is Dice:
+        result = (operand.evaluate()).total
+    return result
 
-    right_type = type(left)
-    if right_type == type([]):
-        right = evaluate(right)
-    elif right_type is Integer:
-        right = int(left.evaluate())
-    elif right_type is Dice:
-        right = (left.evaluate()).total
+
+def handle_operator(op, left, right):
+    left = handle_operand(left)
+    print(f"> .. {left}")
+
+    print(f"> .. {str(op)}")
+    
+    right = handle_operand(right)
+    print(f"> .. {right}")
 
     if str(op) == "+":
         t = Add(left, right)
@@ -83,14 +88,19 @@ def evaluate(tokens):
             return evaluate(cur_token)
         elif cur_token_type is Integer:
             result = int(cur_token.evaluate())
+            print(f"> {result}")
         elif cur_token_type is Dice:
-            result = (cur_token.evaluate()).total
+            result = (cur_token.evaluate())
+            print(f"> {result} ({result.total})")
+            result = result.total
         elif cur_token in ["!advantage", "!adv", "!disadvantage", "!dis", "!keep", "!take", "!drop", "!shrink", "!grow"]:
             next_token = tokens.pop()
             result = handle_flags(cur_token, next_token)
+            print(f"> {result}")
         elif cur_token in ["+", "-", "*", "/"]:
             next_token = tokens.pop()
             result = handle_operator(cur_token, next_token, prev_token)
+            print(f"> {result}")
         prev_token = cur_token
     return result
 

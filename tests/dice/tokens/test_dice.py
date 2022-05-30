@@ -22,12 +22,14 @@
 from dice.tokens import Dice
 import pytest
 
+
 def test_initialize_dice():
     token = Dice(rolls=1, sides=6)
     assert token.rolls == 1
     assert token.sides == 6
     assert token.results is None
     assert token.total == 0
+
 
 def test_dice_repr():
     """
@@ -41,6 +43,7 @@ def test_dice_repr():
     token = Dice(rolls=1, sides=6)
     assert repr(token) == "Dice(rolls=1, sides=6)"
 
+
 def test_dice_str():
     """
     Test that the string representation of the operator is what is
@@ -53,6 +56,7 @@ def test_dice_str():
     token = Dice(rolls=1, sides=6)
     assert str(token) == "1d6"
 
+
 def test_dice_evaluate(mocker):
     mock_mt_rand = mocker.patch("dice.tokens.mt_rand")
     mock_mt_rand.return_value = 4
@@ -64,6 +68,7 @@ def test_dice_evaluate(mocker):
     assert token.results == [4]
     assert token.total == 4
     mock_mt_rand.assert_called_once_with(min=1, max=6)
+
 
 def test_dice_roll(mocker):
     mock_mt_rand = mocker.patch("dice.tokens.mt_rand")

@@ -22,10 +22,11 @@
 from dice.operators import Add
 import pytest
 
+
 def test_instantiate_add_operator():
     operator = Add(5, 1)
-    assert operator.original_operands == (5,1)
-    assert operator.operands == (5,1)
+    assert operator.original_operands == (5, 1)
+    assert operator.operands == (5, 1)
 
 
 def test_add_operator_repr():
@@ -52,6 +53,7 @@ def test_add_operator_repr():
     operator = Add(5, 1)
     assert str(operator) == "5+1"
 
+
 def test_evaluate():
     """
     Test that the evaluation of the operator is correct.
@@ -63,6 +65,7 @@ def test_evaluate():
     operator = Add(5, 1)
     actual = operator.evaluate()
     assert actual == 6
+
 
 def test_evaluate_invalid():
     """
@@ -76,6 +79,7 @@ def test_evaluate_invalid():
     operator = Add(5, "invalid")
     with pytest.raises(ValueError):
         operator.evaluate()
+
 
 def test_evaluate_operand_as_integral_string():
     """
@@ -91,10 +95,12 @@ def test_evaluate_operand_as_integral_string():
     actual = operator.evaluate()
     assert actual == 7
 
+
 def test_evaluate_object():
     pass
 
+
 def test_function():
-    #operator = Add()
-    #operator.function()
+    # operator = Add()
+    # operator.function()
     pass

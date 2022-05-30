@@ -15,8 +15,7 @@ import re
 
 
 class Roll:
-    """An object that represents the roll and its results.
-    """
+    """An object that represents the roll and its results."""
 
     @property
     def result(self):
@@ -24,7 +23,7 @@ class Roll:
 
     def __init__(self, expression: str):
         self.expression = expression
-    
+
     def evaluate(self, tokens):
         """Evaluate the stack of tokens.
 
@@ -56,10 +55,20 @@ class Roll:
                 result = int(cur_token.evaluate())
                 print(f"> {result}")
             elif cur_token_type is Dice:
-                result = (cur_token.evaluate())
+                result = cur_token.evaluate()
                 print(f"> {result} ({result.total})")
                 result = result.total
-            elif cur_token in ["!advantage", "!adv", "!disadvantage", "!dis", "!keep", "!take", "!drop", "!shrink", "!grow"]:
+            elif cur_token in [
+                "!advantage",
+                "!adv",
+                "!disadvantage",
+                "!dis",
+                "!keep",
+                "!take",
+                "!drop",
+                "!shrink",
+                "!grow",
+            ]:
                 next_token = tokens.pop()
                 result = self.handle_flags(cur_token, next_token)
                 print(f"> {result}")
@@ -80,10 +89,9 @@ class Roll:
         elif flag in ("!keep"):
             t = Keep(expr)
         return t.evaluate()
-        
+
     def handle_operand(self, operand):
-        """Evaluates an operand on either the left or right of an operator.
-        """
+        """Evaluates an operand on either the left or right of an operator."""
         operand_type = type(operand)
         if operand_type == type([]):
             result = self.evaluate(operand)
@@ -98,7 +106,7 @@ class Roll:
         print(f"> .. {left}")
 
         print(f"> .. {str(op)}")
-        
+
         right = self.handle_operand(right)
         print(f"> .. {right}")
 
@@ -111,7 +119,7 @@ class Roll:
         if str(op) == "/":
             t = Divide(left, right)
         return int(t.evaluate())
-        
+
     def roll(self):
         parsed = parse_expression_using_infix_notation(self.expression)
         self._result = self.evaluate(parsed.asList())
@@ -127,10 +135,9 @@ def parse_expression_using_infix_notation(expr):
 
 
 def roll(text: str) -> list:
-    """
-    """
+    """Roll dice represented by the text expression."""
     results = []
-    expressions = re.split(r'[,;]', text)
+    expressions = re.split(r"[,;]", text)
     for expr in expressions:
         roll_obj = Roll(expr)
         result = (roll_obj.roll()).result

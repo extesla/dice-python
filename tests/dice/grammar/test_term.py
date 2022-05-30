@@ -46,7 +46,7 @@ def test_term_dice_only_invalid():
 
 
 def test_term_dice_only_uppercase():
-    #NOTE:  this is the same as in test_term_dice_only as CaselessLiteral will
+    # NOTE:  this is the same as in test_term_dice_only as CaselessLiteral will
     # return the case of the defined matchString, not the search string passed
     # into parse.   -ZR
     parse_result = term().parseString("1D6")

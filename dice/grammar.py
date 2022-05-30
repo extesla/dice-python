@@ -45,16 +45,21 @@ def dice():
 
     :return: The BNF grammar for dice roll notation, e.g. 1d6.
     """
+
     def transformer(string, location, tokens):
-        logger.debug(("Transforming parsed text: `{}` into Dice token with "
-            "the following parts: {}").format(string, str(tokens)))
+        logger.debug(
+            (
+                "Transforming parsed text: `{}` into Dice token with "
+                "the following parts: {}"
+            ).format(string, str(tokens))
+        )
         return Dice(rolls=tokens["dice_rolls"], sides=tokens["dice_sides"])
 
     #: Create the sub-symbols (rolls and sides) for the dice grammar.
     rolls = Optional(integer(), default=1).setResultsName("dice_rolls")
     sides = dice_sides().setResultsName("dice_sides")
 
-    symbol = (rolls + CaselessLiteral("d") + sides)
+    symbol = rolls + CaselessLiteral("d") + sides
     symbol.setName("dice")
     symbol.setParseAction(transformer)
     return symbol
@@ -71,17 +76,18 @@ def dice_sides():
         integer()
         | CaselessLiteral("fate")
         | CaselessLiteral("f")
-        #| StringStart() + CaselessLiteral("f") + StringEnd() \
-        #| StringStart() + CaselessLiteral("fate") + StringEnd()
+        # | StringStart() + CaselessLiteral("f") + StringEnd() \
+        # | StringStart() + CaselessLiteral("fate") + StringEnd()
     )
     return token
 
 
 def expression():
-    """
-    """
+    """ """
+
     def transformer(string, location, tokens):
         return tokens.asList()
+
     token = OneOrMore(term())
     token.setName("expression")
     token.setParseAction(transformer)
@@ -122,12 +128,8 @@ def operand():
 
     :return: The operand BNF.
     """
-    token = (
-        dice()
-        ^ Group(dice() + flags())
-        ^ integer()
-    )
-    #token = (Group(dice() + Optional(flags()))) | integer()
+    token = dice() ^ Group(dice() + flags()) ^ integer()
+    # token = (Group(dice() + Optional(flags()))) | integer()
     token.setName("operand")
     token.setResultsName("operand")
     return token
@@ -140,8 +142,7 @@ def operator():
 
 
 def term():
-    """
-    """
+    """ """
     token = (
         StringStart() + operand() + StringEnd()
         ^ StringStart() + Group(operand() + operator() + operand()) + StringEnd()

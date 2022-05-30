@@ -24,8 +24,7 @@ import pytest
 
 
 def test_initialize_token():
-    """
-    """
+    """ """
     pass
 
 

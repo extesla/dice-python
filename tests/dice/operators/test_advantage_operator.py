@@ -26,8 +26,8 @@ import pytest
 
 def test_instantiate_advantage_operator():
     operator = Advantage([5, 17])
-    assert operator.original_operands == ([5,17],)
-    assert operator.operands == ([5,17],)
+    assert operator.original_operands == ([5, 17],)
+    assert operator.operands == ([5, 17],)
 
 
 def test_repr():

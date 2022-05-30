@@ -56,7 +56,8 @@ class Operator(Token):
 
     def __repr__(self):
         return "{0}({1})".format(
-            classname(self), ', '.join(map(str, self.original_operands)))
+            classname(self), ", ".join(map(str, self.original_operands))
+        )
 
     def evaluate(self):
         """
@@ -98,6 +99,7 @@ class Multiply(IntegerOperator):
     def __str__(self):
         return "{}".format("*".join(map(str, self.original_operands)))
 
+
 # @operator(literal="-")
 class Subtract(IntegerOperator):
     def function(self, minuend, subtrahend):
@@ -117,6 +119,7 @@ class Subtract(IntegerOperator):
     def __str__(self):
         return "{}".format("-".join(map(str, self.original_operands)))
 
+
 # @operator(literal="+")
 class Add(IntegerOperator):
     function = operator.add
@@ -124,10 +127,11 @@ class Add(IntegerOperator):
     def __str__(self):
         return "{}".format("+".join(map(str, self.original_operands)))
 
+
 # @operator(literal="!total")
 class Total(Operator):
-    """
-    """
+    """ """
+
     function = sum
 
 
@@ -147,6 +151,7 @@ class Drop(Operator):
     >>> operator.evaluate()
     [8]
     """
+
     def function(self, iterable, n):
         return sorted(iterable)[n:]
 
@@ -171,6 +176,7 @@ class Keep(Operator):
     >>> operator.evaluate()
     [5, 8]
     """
+
     def function(self, iterable, n):
         #: If we're indicating that we don't want to keep anything (!keep(0))
         #: or we want to keep fewer than nothing (!keep(-2)) then we should
@@ -190,6 +196,7 @@ class Advantage(Operator):
     2d20!adv
     2d20+5!advantage
     """
+
     def function(self, iterable):
         result = sorted(iterable, reverse=True)[:1]
         if result:
@@ -213,11 +220,14 @@ class Disadvantage(Operator):
     2d20!dis
     2d20+5!disadvantage
     """
+
     def function(self, iterable):
         result = sorted(iterable)[:1]
         if result:
             return result[0]
-        raise IndexError("Unable to select disadvantaged result from: {}".format(result))
+        raise IndexError(
+            "Unable to select disadvantaged result from: {}".format(result)
+        )
 
     def __repr__(self):
         """
@@ -237,6 +247,7 @@ class Reroll(Operator):
     1d20!reroll(1-5)+5
     1d20!reroll(1,2,18-20)+5
     """
+
     pass
 
 
@@ -248,6 +259,7 @@ class Grow(Operator):
 
     1d20!grow(1)
     """
+
     pass
 
 
@@ -259,4 +271,5 @@ class Shrink(Operator):
 
     1d20!shrink(1)
     """
+
     pass

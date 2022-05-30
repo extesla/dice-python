@@ -72,7 +72,7 @@ def test_dice_grammar_with_fate_dice():
 def test_dice_grammar_with_fate_dice_abbr():
     token = dice()
     actual = token.parseString("3dF")
-    #ZR: Expected to be lowercase as defined in grammar.py
+    # ZR: Expected to be lowercase as defined in grammar.py
     expected = Dice(rolls=3, sides="f")
 
     assert len(actual) == 1

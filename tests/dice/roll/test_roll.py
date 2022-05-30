@@ -24,7 +24,6 @@ from pyparsing import ParseException
 import pytest
 
 
-
 @pytest.fixture
 def mock_randint(mocker):
     _mock = mocker.patch("random.randint")
@@ -50,11 +49,9 @@ def test_roll_3d6(mocker, mock_randint):
 
     actual = roll("3d6")
     assert actual == [8]
-    mock_randint.assert_has_calls([
-        mocker.call(1, 6),
-        mocker.call(1, 6),
-        mocker.call(1, 6)
-    ])
+    mock_randint.assert_has_calls(
+        [mocker.call(1, 6), mocker.call(1, 6), mocker.call(1, 6)]
+    )
 
 
 def test_roll_1d20_addition(mock_randint):
@@ -78,10 +75,12 @@ def test_roll_2d20_advantage(mocker, mock_randint):
 
     actual = roll("2d20!advantage")
     assert actual == [15]
-    mock_randint.assert_has_calls([
-        mocker.call(1, 20),
-        mocker.call(1, 20),
-    ])
+    mock_randint.assert_has_calls(
+        [
+            mocker.call(1, 20),
+            mocker.call(1, 20),
+        ]
+    )
 
 
 def test_roll_2d20_advantage_with_modifiers_after_flag(mocker, mock_randint):
@@ -89,10 +88,12 @@ def test_roll_2d20_advantage_with_modifiers_after_flag(mocker, mock_randint):
 
     actual = roll("2d20!advantage+5")
     assert actual == [20]
-    mock_randint.assert_has_calls([
-        mocker.call(1, 20),
-        mocker.call(1, 20),
-    ])
+    mock_randint.assert_has_calls(
+        [
+            mocker.call(1, 20),
+            mocker.call(1, 20),
+        ]
+    )
 
 
 def test_roll_2d20_advantage_with_modifiers_before_flag(mock_randint):
@@ -101,15 +102,18 @@ def test_roll_2d20_advantage_with_modifiers_before_flag(mock_randint):
     with pytest.raises(ParseException):
         roll("2d20+5!advantage")
 
+
 def test_roll_2d20_disadvantage(mocker, mock_randint):
     mock_randint.side_effect = [8, 15]
 
     actual = roll("2d20!disadvantage")
     assert actual == [8]
-    mock_randint.assert_has_calls([
-        mocker.call(1, 20),
-        mocker.call(1, 20),
-    ])
+    mock_randint.assert_has_calls(
+        [
+            mocker.call(1, 20),
+            mocker.call(1, 20),
+        ]
+    )
 
 
 def test_roll_2d20_disadvantage_with_modifiers_after_flag(mocker, mock_randint):
@@ -117,10 +121,12 @@ def test_roll_2d20_disadvantage_with_modifiers_after_flag(mocker, mock_randint):
 
     actual = roll("2d20!disadvantage+5")
     assert actual == [13]
-    mock_randint.assert_has_calls([
-        mocker.call(1, 20),
-        mocker.call(1, 20),
-    ])
+    mock_randint.assert_has_calls(
+        [
+            mocker.call(1, 20),
+            mocker.call(1, 20),
+        ]
+    )
 
 
 def test_roll_2d20_disadvantage_with_modifiers_before_flag(mock_randint):

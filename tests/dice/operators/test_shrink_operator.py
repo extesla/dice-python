@@ -25,8 +25,8 @@ import pytest
 
 def test_init():
     operator = Shrink(5, 1)
-    assert operator.original_operands == (5,1)
-    assert operator.operands == (5,1)
+    assert operator.original_operands == (5, 1)
+    assert operator.operands == (5, 1)
 
 
 def test_repr():
@@ -43,6 +43,6 @@ def test_evaluate_object():
 
 
 def test_function():
-    #operator = Shrink()
-    #operator.function()
+    # operator = Shrink()
+    # operator.function()
     pass

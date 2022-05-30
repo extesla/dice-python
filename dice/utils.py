@@ -25,6 +25,7 @@ import random
 #: Module logger
 logger = logging.getLogger(__name__)
 
+
 def classname(obj):
     """Returns the name of an objects class"""
     return obj.__class__.__name__

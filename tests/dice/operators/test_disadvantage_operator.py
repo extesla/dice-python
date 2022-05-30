@@ -26,8 +26,8 @@ import pytest
 
 def test_instantiate_disadvantage_operator():
     operator = Disadvantage([17, 3])
-    assert operator.original_operands == ([17,3],)
-    assert operator.operands == ([17,3],)
+    assert operator.original_operands == ([17, 3],)
+    assert operator.operands == ([17, 3],)
 
 
 def test_repr():

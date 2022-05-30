@@ -54,13 +54,15 @@ def test_evaluate_drop_with_dice_token_values(mocker):
     assert actual == [3, 4, 5]
     assert operator.result == [3, 4, 5]
     assert actual == operator.result
-    mock_random.assert_has_calls([
-        mocker.call(min=1, max=6),
-        mocker.call(min=1, max=6),
-        mocker.call(min=1, max=6),
-        mocker.call(min=1, max=6),
-        mocker.call(min=1, max=6),
-    ])
+    mock_random.assert_has_calls(
+        [
+            mocker.call(min=1, max=6),
+            mocker.call(min=1, max=6),
+            mocker.call(min=1, max=6),
+            mocker.call(min=1, max=6),
+            mocker.call(min=1, max=6),
+        ]
+    )
 
 
 def test_drop_function_when_droping_more_values_than_exist():

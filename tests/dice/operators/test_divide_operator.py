@@ -25,8 +25,8 @@ import pytest
 
 def test_instantiate_divide_operator():
     operator = Divide(5, 1)
-    assert operator.original_operands == (5,1)
-    assert operator.operands == (5,1)
+    assert operator.original_operands == (5, 1)
+    assert operator.operands == (5, 1)
 
 
 def test_divide_operator_repr():
@@ -54,6 +54,7 @@ def test_divide_operator_str():
     operator = Divide(6, 2)
     assert str(operator) == "6/2"
 
+
 def test_evaluate():
     """
     Test that the evaluation of the operator is correct.
@@ -65,6 +66,7 @@ def test_evaluate():
     operator = Divide(6, 2)
     actual = operator.evaluate()
     assert actual == 3
+
 
 def test_evaluate_divide_by_zero():
     """
@@ -78,6 +80,7 @@ def test_evaluate_divide_by_zero():
     operator = Divide(6, 0)
     with pytest.raises(ZeroDivisionError):
         operator.evaluate()
+
 
 def test_evaluate_invalid():
     """
@@ -93,6 +96,7 @@ def test_evaluate_invalid():
     with pytest.raises(ValueError):
         operator.evaluate()
 
+
 def test_evaluate_operand_as_integral_string():
     """
     Test that the evaluation of the operator is correct on all
@@ -107,10 +111,12 @@ def test_evaluate_operand_as_integral_string():
     actual = operator.evaluate()
     assert actual == 2
 
+
 def test_evaluate_object():
     pass
 
+
 def test_function():
-    #operator = Divide()
-    #operator.function()
+    # operator = Divide()
+    # operator.function()
     pass

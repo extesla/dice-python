@@ -65,7 +65,7 @@ class Token(object):
         """
         Wraps evaluate(), caching results
         """
-        if not hasattr(self, 'results') or self.results is None:
+        if not hasattr(self, "results") or self.results is None:
             self.evaluate()
         logger.debug(str.format("Evaluating: {0} -> {1}", str(self), str(self.results)))
         return self
@@ -182,6 +182,7 @@ class Term(Token):
     :param value: the term's value.
     :type value: str
     """
+
     pass
 
 
@@ -213,8 +214,7 @@ class Dice(Term):
     total = 0
 
     def __eq__(self, other):
-        return (self.sides == other.sides
-            and self.rolls == other.rolls)
+        return self.sides == other.sides and self.rolls == other.rolls
 
     def __iter__(self):
         for x in self.results:

@@ -105,17 +105,41 @@ def evaluate(tokens):
     return result
 
 
-def roll(text):
-    """
-    """
+def parse_expression_using_infix_notation(expr):
     infix_expression = infixNotation(expression(), [
         (flags(), 1, opAssoc.LEFT,),
         (operator(), 2, opAssoc.LEFT,),
     ])
+    return infix_expression.parseString(expr)
 
+
+def roll(text: str) -> list:
+    """
+    """
     results = []
-    parts = re.split(r'[,;]', text)
-    for part in parts:
-        parsed = infix_expression.parseString(part)
-        results.append(evaluate(parsed.asList()))
+    expressions = re.split(r'[,;]', text)
+    for expr in expressions:
+        roll_obj = Roll(expr)
+        result = (roll_obj.roll()).result
+        results.append(result)
     return results
+
+
+class Roll:
+    """An object that represents the roll and its results.
+    """
+
+    @property
+    def result(self):
+        return self._result
+
+    def __init__(self, expression: str):
+        self.expression = expression
+    
+    def evaluate(self, tokens):
+        return evaluate(tokens)
+
+    def roll(self):
+        parsed = parse_expression_using_infix_notation(self.expression)
+        self._result = self.evaluate(parsed.asList())
+        return self

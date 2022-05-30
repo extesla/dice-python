@@ -24,187 +24,178 @@ from pyparsing import ParseException
 import pytest
 
 
-def test_roll_1d6(mocker):
+
+@pytest.fixture
+def mock_randint(mocker):
+    _mock = mocker.patch("random.randint")
+    return _mock
+
+
+def test_roll_1d6(mock_randint):
     """
     Assert that when 1d6 is rolled, that the expected value is returned.
     """
-    mock_random = mocker.patch("random.randint")
-    mock_random.return_value = 3
+    mock_randint.return_value = 3
 
     actual = roll("1d6")
     assert actual == [3]
-    mock_random.assert_called_once_with(1, 6)
+    mock_randint.assert_called_once_with(1, 6)
 
 
-def test_roll_3d6(mocker):
+def test_roll_3d6(mocker, mock_randint):
     """
     Assert that when 3d6 is rolled, that the expected value is returned.
     """
-    mock_random = mocker.patch("random.randint")
-    mock_random.side_effect = [3, 1, 4]
+    mock_randint.side_effect = [3, 1, 4]
 
     actual = roll("3d6")
     assert actual == [8]
-    mock_random.assert_has_calls([
+    mock_randint.assert_has_calls([
         mocker.call(1, 6),
         mocker.call(1, 6),
         mocker.call(1, 6)
     ])
 
 
-def test_roll_1d20_addition(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.return_value = 17
+def test_roll_1d20_addition(mock_randint):
+    mock_randint.return_value = 17
 
     actual = roll("1d20+5")
     assert actual == [22]
-    mock_random.assert_called_once_with(1, 20)
+    mock_randint.assert_called_once_with(1, 20)
 
 
-def test_roll_1d20_addition_with_spaces(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.return_value = 17
+def test_roll_1d20_addition_with_spaces(mock_randint):
+    mock_randint.return_value = 17
 
     actual = roll("1d20  + 5")
     assert actual == [22]
-    mock_random.assert_called_once_with(1, 20)
+    mock_randint.assert_called_once_with(1, 20)
 
 
-def test_roll_2d20_advantage(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.side_effect = [8, 15]
+def test_roll_2d20_advantage(mocker, mock_randint):
+    mock_randint.side_effect = [8, 15]
 
     actual = roll("2d20!advantage")
     assert actual == [15]
-    mock_random.assert_has_calls([
+    mock_randint.assert_has_calls([
         mocker.call(1, 20),
         mocker.call(1, 20),
     ])
 
 
-def test_roll_2d20_advantage_with_modifiers_after_flag(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.side_effect = [8, 15]
+def test_roll_2d20_advantage_with_modifiers_after_flag(mocker, mock_randint):
+    mock_randint.side_effect = [8, 15]
 
     actual = roll("2d20!advantage+5")
     assert actual == [20]
-    mock_random.assert_has_calls([
+    mock_randint.assert_has_calls([
         mocker.call(1, 20),
         mocker.call(1, 20),
     ])
 
 
-def test_roll_2d20_advantage_with_modifiers_before_flag(mocker):
+def test_roll_2d20_advantage_with_modifiers_before_flag(mock_randint):
     #: We currently don't support applying flags to an expression, only to
     #: the actual dice roll.
     with pytest.raises(ParseException):
         roll("2d20+5!advantage")
 
-def test_roll_2d20_disadvantage(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.side_effect = [8, 15]
+def test_roll_2d20_disadvantage(mocker, mock_randint):
+    mock_randint.side_effect = [8, 15]
 
     actual = roll("2d20!disadvantage")
     assert actual == [8]
-    mock_random.assert_has_calls([
+    mock_randint.assert_has_calls([
         mocker.call(1, 20),
         mocker.call(1, 20),
     ])
 
 
-def test_roll_2d20_disadvantage_with_modifiers_after_flag(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.side_effect = [8, 15]
+def test_roll_2d20_disadvantage_with_modifiers_after_flag(mocker, mock_randint):
+    mock_randint.side_effect = [8, 15]
 
     actual = roll("2d20!disadvantage+5")
     assert actual == [13]
-    mock_random.assert_has_calls([
+    mock_randint.assert_has_calls([
         mocker.call(1, 20),
         mocker.call(1, 20),
     ])
 
 
-def test_roll_2d20_disadvantage_with_modifiers_before_flag(mocker):
+def test_roll_2d20_disadvantage_with_modifiers_before_flag(mock_randint):
     #: We currently don't support applying flags to an expression, only to
     #: the actual dice roll.
     with pytest.raises(ParseException):
         roll("2d20+5!disadvantage")
 
 
-def test_roll_1d20_divide(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.return_value = 12
+def test_roll_1d20_divide(mock_randint):
+    mock_randint.return_value = 12
 
     actual = roll("1d20/3")
     assert actual == [4]
-    mock_random.assert_called_once_with(1, 20)
+    mock_randint.assert_called_once_with(1, 20)
 
 
-def test_roll_1d20_divide_to_integer(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.return_value = 17
+def test_roll_1d20_divide_to_integer(mock_randint):
+    mock_randint.return_value = 17
 
     actual = roll("1d20/3")
     assert actual == [5]
-    mock_random.assert_called_once_with(1, 20)
+    mock_randint.assert_called_once_with(1, 20)
 
 
-def test_roll_1d20_divide_with_spaces(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.return_value = 12
+def test_roll_1d20_divide_with_spaces(mock_randint):
+    mock_randint.return_value = 12
 
     actual = roll("1d20 /  3")
     assert actual == [4]
-    mock_random.assert_called_once_with(1, 20)
+    mock_randint.assert_called_once_with(1, 20)
 
 
-def test_roll_1d20_multiply(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.return_value = 6
+def test_roll_1d20_multiply(mock_randint):
+    mock_randint.return_value = 6
 
     actual = roll("1d20*3")
     assert actual == [18]
-    mock_random.assert_called_once_with(1, 20)
+    mock_randint.assert_called_once_with(1, 20)
 
 
-def test_roll_1d20_multiply_with_spaces(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.return_value = 6
+def test_roll_1d20_multiply_with_spaces(mock_randint):
+    mock_randint.return_value = 6
 
     actual = roll("1d20  * 3")
     assert actual == [18]
-    mock_random.assert_called_once_with(1, 20)
+    mock_randint.assert_called_once_with(1, 20)
 
 
-def test_roll_1d20_subtraction(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.return_value = 12
+def test_roll_1d20_subtraction(mock_randint):
+    mock_randint.return_value = 12
 
     actual = roll("1d20-5")
     assert actual == [7]
-    mock_random.assert_called_once_with(1, 20)
+    mock_randint.assert_called_once_with(1, 20)
 
 
-def test_roll_1d20_subtraction_floor(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.return_value = 2
+def test_roll_1d20_subtraction_floor(mock_randint):
+    mock_randint.return_value = 2
 
     actual = roll("1d20-5")
     assert actual == [1]
-    mock_random.assert_called_once_with(1, 20)
+    mock_randint.assert_called_once_with(1, 20)
 
 
-def test_roll_1d20_subtraction_with_spaces(mocker):
-    mock_random = mocker.patch("random.randint")
-    mock_random.return_value = 12
+def test_roll_1d20_subtraction_with_spaces(mock_randint):
+    mock_randint.return_value = 12
 
     actual = roll("1d20 -   5")
     assert actual == [7]
-    mock_random.assert_called_once_with(1, 20)
+    mock_randint.assert_called_once_with(1, 20)
 
 
 @pytest.mark.skip(reason="Not yet ready")
-def test_roll_1dF(mocker):
+def test_roll_1dF(mock_randint):
     #: TBW
     #:
     #: Given
@@ -218,7 +209,7 @@ def test_roll_1dF(mocker):
 
 
 @pytest.mark.skip(reason="Not yet ready")
-def test_roll_d20(mocker):
+def test_roll_d20(mock_randint):
     #: TBW
     #:
     #: Given the roll function

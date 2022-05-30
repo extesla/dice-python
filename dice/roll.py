@@ -1,3 +1,5 @@
+import re
+from pyparsing import infixNotation, opAssoc
 from .grammar import expression, flags, operator
 from .operators import (
     Add,
@@ -10,8 +12,6 @@ from .operators import (
     Subtract,
 )
 from .tokens import Dice, Integer
-from pyparsing import infixNotation, opAssoc
-import re
 
 
 class Roll:

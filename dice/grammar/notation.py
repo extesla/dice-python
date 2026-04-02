@@ -16,8 +16,6 @@ from pyparsing import (
     Regex,
     Suppress,
     Word,
-    alphanums,
-    alphas,
     infixNotation,
     nums,
     opAssoc,

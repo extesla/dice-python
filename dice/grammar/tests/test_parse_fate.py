@@ -1,0 +1,29 @@
+from dice.grammar import parse
+from dice.terms import FateDiceTerm
+
+
+def test_parse_fate():
+    r = parse("4dF")
+    assert len(r.errors) == 0
+    dt = r.ast.children[0]
+    assert isinstance(dt, FateDiceTerm)
+    assert dt.kind == "dice_term"
+    assert dt.count == 4
+
+
+def test_parse_fate_with_modifier():
+    r = parse("4dF+3")
+    assert len(r.errors) == 0
+    children = r.ast.children
+    assert isinstance(children[0], FateDiceTerm)
+    assert children[1].kind == "operator_term"
+    assert children[2].kind == "numeric_term"
+    assert children[2].value == 3
+
+
+def test_parse_fate_implicit_count():
+    r = parse("dF")
+    assert len(r.errors) == 0
+    dt = r.ast.children[0]
+    assert isinstance(dt, FateDiceTerm)
+    assert dt.count == 1

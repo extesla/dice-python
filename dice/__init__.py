@@ -6,6 +6,22 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-#: Expose the core library functions here so that all someone needs to do is
-#: "import dice" to get them.
-from .roll import roll
+from dice.execution import ExecutionConfig, ExecutionResult, execute  # noqa: E402
+from dice.grammar import parse, validate  # noqa: E402
+from dice.rng import RNG, DefaultRNG, SeededRNG  # noqa: E402
+
+# Legacy roll function preserved for migration
+from dice.roll import roll as roll_legacy  # noqa: E402, F401
+
+
+def roll(
+    expression: str,
+    *,
+    rng: RNG | None = None,
+    config: ExecutionConfig | None = None,
+) -> ExecutionResult:
+    """Parse and execute a dice expression. One-call convenience API."""
+    parsed = parse(expression)
+    if parsed.errors:
+        raise parsed.errors[0]
+    return execute(parsed.ast, rng=rng, config=config)

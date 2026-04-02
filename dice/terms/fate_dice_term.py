@@ -31,9 +31,11 @@ class FateDiceTerm(DiceTerm):
             for _ in range(self.count)
         ]
         if self.modifier_strings:
-            from dice.terms.dice_term import _apply_modifiers
+            from dice.modifiers.parser import parse_modifier_string
+            from dice.modifiers.registry import apply_modifiers
 
-            _apply_modifiers(self.results, self.modifier_strings)
+            specs = parse_modifier_string("".join(self.modifier_strings))
+            self.results = apply_modifiers(self.results, specs, rng, 3)
         self._evaluated = True
         return self
 

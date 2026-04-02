@@ -1,13 +1,13 @@
 import pytest
 from dice import roll
 from dice.errors import DiceParseError
-from dice.execution import ExecutionResult
+from dice.roll_result import RollResult
 from dice.rng import SeededRNG
 
 
-def test_roll_returns_execution_result():
+def test_roll_returns_roll_result():
     result = roll("2d20kh1+7", rng=SeededRNG(42))
-    assert isinstance(result, ExecutionResult)
+    assert isinstance(result, RollResult)
 
 
 def test_roll_has_tree():

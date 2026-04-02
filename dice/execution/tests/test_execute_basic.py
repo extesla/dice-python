@@ -48,4 +48,4 @@ def test_execute_expression_preserved():
 
 def test_execute_syntax_version():
     result = roll("1d6", rng=SeededRNG(42))
-    assert result.syntax_version == "1.0"
+    assert result.execution.syntax_version == "1.0"

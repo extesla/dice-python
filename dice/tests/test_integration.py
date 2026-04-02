@@ -2,8 +2,7 @@
 
 import json
 
-from dice import roll, SeededRNG, RollResult
-from dice.terms import FateDiceTerm
+from dice import RollResult, SeededRNG, roll
 
 
 def _assert_valid_tree(tree: dict) -> None:

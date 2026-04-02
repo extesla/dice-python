@@ -3,12 +3,10 @@
 from __future__ import annotations
 
 from dice.errors import DiceExecutionError
+from dice.execution.config import ExecutionConfig
 from dice.rng import RNG
 from dice.terms.base import RollTerm
 from dice.terms.dice_term import DiceTerm
-from dice.terms.fate_dice_term import FateDiceTerm
-
-from dice.execution.config import ExecutionConfig
 
 
 class _EvalContext:
@@ -27,7 +25,10 @@ def evaluate_tree(root: RollTerm, ctx: _EvalContext) -> None:
     if ctx.current_depth > ctx.config.max_depth:
         raise DiceExecutionError(
             code="MAX_DEPTH_EXCEEDED",
-            message=f"Expression depth ({ctx.current_depth}) exceeds maximum ({ctx.config.max_depth})",
+            message=(
+                f"Expression depth ({ctx.current_depth}) "
+                f"exceeds maximum ({ctx.config.max_depth})"
+            ),
         )
 
     try:

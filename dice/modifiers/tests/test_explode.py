@@ -1,4 +1,5 @@
 import pytest
+
 from dice.errors import DiceExecutionError
 from dice.modifiers.base import ModifierSpec
 from dice.modifiers.explode import explode

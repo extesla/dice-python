@@ -27,6 +27,6 @@ def evaluate(
     template: str | None = None,
     context: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Evaluate an execution tree using the registered evaluator for the given system."""
+    """Evaluate an execution tree using the registered evaluator."""
     evaluator = get_evaluator(system)
     return evaluator.evaluate(execution_tree, template, context)

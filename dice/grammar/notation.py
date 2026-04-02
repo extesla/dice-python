@@ -90,7 +90,15 @@ _dice_expr = Group(
     Optional(_dice_count)
     + Suppress(CaselessLiteral("d"))
     + _dice_sides
-    + Group(Optional(_modifier + Optional(_modifier + Optional(_modifier + Optional(_modifier)))))
+    + Group(
+        Optional(
+            _modifier
+            + Optional(
+                _modifier
+                + Optional(_modifier + Optional(_modifier))
+            )
+        )
+    )
     .setResultsName("modifiers")
 ).setParseAction(make_dice_term).setName("dice_expr")
 

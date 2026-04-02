@@ -1,6 +1,6 @@
 from typing import Any
 
-from dice.evaluation import register_evaluator, evaluate
+from dice.evaluation import evaluate, register_evaluator
 
 
 class CritCheckEvaluator:

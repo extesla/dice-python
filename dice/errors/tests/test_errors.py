@@ -1,5 +1,11 @@
 import pytest
-from dice.errors import DiceError, DiceParseError, DiceExecutionError, DiceValidationError
+
+from dice.errors import (
+    DiceError,
+    DiceExecutionError,
+    DiceParseError,
+    DiceValidationError,
+)
 
 
 def test_dice_error_str():

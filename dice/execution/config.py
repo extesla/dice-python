@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from dice.constants import MAX_DICE_COUNT, MAX_EXPRESSION_DEPTH, MAX_EXPLOSIONS
+from dice.constants import MAX_DICE_COUNT, MAX_EXPLOSIONS, MAX_EXPRESSION_DEPTH
 
 
 @dataclass

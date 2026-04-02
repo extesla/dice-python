@@ -30,7 +30,10 @@ def test_order_independence_explode_kh():
 def test_apply_modifiers_sorts_by_order():
     """Verify that apply_modifiers applies reroll before keep."""
     rng = SeededRNG(42)
-    results = [DieResult(value=1), DieResult(value=5), DieResult(value=3), DieResult(value=6)]
+    results = [
+        DieResult(value=1), DieResult(value=5),
+        DieResult(value=3), DieResult(value=6),
+    ]
     specs = [
         ModifierSpec(key="kh", argument=3),
         ModifierSpec(key="r", compare_point="=1"),

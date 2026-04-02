@@ -1,4 +1,5 @@
 import pytest
+
 from dice.modifiers.parser import parse_modifier_string
 
 

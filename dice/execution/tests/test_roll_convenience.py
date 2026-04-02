@@ -1,8 +1,9 @@
 import pytest
+
 from dice import roll
 from dice.errors import DiceParseError
-from dice.roll_result import RollResult
 from dice.rng import SeededRNG
+from dice.roll_result import RollResult
 
 
 def test_roll_returns_roll_result():

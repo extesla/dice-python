@@ -1,4 +1,5 @@
 import pytest
+
 from dice.rng import SeededRNG
 from dice.terms import FunctionTerm, NumericTerm, OperatorTerm
 

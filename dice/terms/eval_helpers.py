@@ -13,7 +13,10 @@ def compute_infix_total(children: list[RollTerm]) -> int | float:
     while i < len(children) - 1:
         op = children[i]
         if not isinstance(op, OperatorTerm):
-            raise TypeError(f"Expected OperatorTerm at index {i}, got {type(op).__name__}")
+            raise TypeError(
+                f"Expected OperatorTerm at index {i}, "
+                f"got {type(op).__name__}"
+            )
         right = children[i + 1]
         if op.operator == "+":
             result = result + right.total

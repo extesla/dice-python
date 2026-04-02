@@ -1,5 +1,5 @@
-from dice.grammar import parse
 from dice.errors import DiceParseError
+from dice.grammar import parse
 
 
 def test_parse_empty_string():

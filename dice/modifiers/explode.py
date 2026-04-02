@@ -16,7 +16,10 @@ def explode(
     Default compare point: ``= faces`` (i.e. max value).
     """
     explosions = 0
-    new_dice = [r for r in results if matches_compare_point(r.value, spec.compare_point, faces)]
+    new_dice = [
+        r for r in results
+        if matches_compare_point(r.value, spec.compare_point, faces)
+    ]
     while new_dice:
         next_round: list[DieResult] = []
         for _ in new_dice:

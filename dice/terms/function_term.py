@@ -7,7 +7,6 @@ from dice.rng import RNG
 from dice.terms.base import RollTerm
 from dice.terms.eval_helpers import compute_infix_total
 
-
 _FUNCTIONS: dict[str, Any] = {
     "floor": math.floor,
     "ceil": math.ceil,

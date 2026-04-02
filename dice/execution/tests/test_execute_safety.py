@@ -1,4 +1,5 @@
 import pytest
+
 from dice.errors import DiceExecutionError
 from dice.execution import ExecutionConfig, execute
 from dice.grammar import parse

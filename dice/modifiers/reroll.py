@@ -16,7 +16,10 @@ def _reroll(
 ) -> list[DieResult]:
     """Shared implementation for reroll and reroll-once."""
     iterations = 0
-    to_check = [r for r in results if matches_compare_point(r.value, spec.compare_point, faces)]
+    to_check = [
+        r for r in results
+        if matches_compare_point(r.value, spec.compare_point, faces)
+    ]
     while to_check:
         next_round: list[DieResult] = []
         for die in to_check:

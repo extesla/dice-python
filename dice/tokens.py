@@ -19,6 +19,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
+from __future__ import annotations
+
+from typing import Any
+
 from dice.utils import classname, mt_rand
 import logging
 import re
@@ -27,7 +31,7 @@ import re
 logger = logging.getLogger(__name__)
 
 
-class Token(object):
+class Token:
     """
     A ``Token`` is any discrete element of an expression. Tokens can be a
     ``Term`` or an ``Operator``.
@@ -39,9 +43,9 @@ class Token(object):
     """
 
     #: The result of a token's evaluation.
-    results = None
+    results: Any = None
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         #: This is a convenient way that we can make all of our tokens
         #: effectively factories for themselves. This will iterate over all
         #: of the keyword arguments passed into the token's constructor and
@@ -51,7 +55,7 @@ class Token(object):
             if hasattr(self, prop):
                 setattr(self, prop, value)
 
-    def evaluate(self):
+    def evaluate(self) -> Any:
         """
         Evaluate the current token, by default this is a no-op and classes
         that implement ``Token`` are expected to override this function.
@@ -60,7 +64,7 @@ class Token(object):
         """
         return self
 
-    def evaluate_cached(self, verbose=None):
+    def evaluate_cached(self, verbose: bool | None = None) -> Token:
         """
         Wraps evaluate(), caching results
         """
@@ -69,7 +73,7 @@ class Token(object):
         logger.debug(str.format("Evaluating: {0} -> {1}", str(self), str(self.results)))
         return self
 
-    def evaluate_object(self, obj, cls=None):
+    def evaluate_object(self, obj: Any, cls: type | None = None) -> Any:
         """
         Evaluate an object, coercing them to a particular type if necessary.
 
@@ -155,19 +159,19 @@ class Expression(Token):
     #: The raw text representing this expression. This is the original, and
     #: effectively immutable value that was parsed to result in the expression
     #: to be evaluated.
-    _raw_text = None
+    _raw_text: str | None = None
 
-    results = []
+    results: list[Any] = []
 
     #: The tokens, including subexpressions, that compose this expression.
-    tokens = []
+    tokens: list[Any] = []
 
     @property
-    def raw_text(self):
+    def raw_text(self) -> str | None:
         return self._raw_text
 
     @raw_text.setter
-    def raw_text(self, value):
+    def raw_text(self, value: str) -> None:
         raise RuntimeError("Expression's raw text is immutable.")
 
 
@@ -203,29 +207,31 @@ class Dice(Term):
     #: side identifier (e.g. "d6").
     #:
     #: (Default: 1)
-    rolls = None
+    rolls: int | None = None
 
     #: The number of sides for a dice. This is the righthand side of the
     #: dice term, e.g. "d6".
-    sides = None
+    sides: int | None = None
 
     #: The total, summed, value of the evaluation results.
-    total = 0
+    total: int = 0
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Dice):
+            return NotImplemented
         return self.sides == other.sides and self.rolls == other.rolls
 
-    def __iter__(self):
+    def __iter__(self) -> Any:
         for x in self.results:
             yield x
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "Dice(rolls={0!r}, sides={1!r})".format(self.rolls, self.sides)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{0!s}d{1!s}".format(self.rolls, self.sides)
 
-    def evaluate(self):
+    def evaluate(self) -> Dice:
         """
         Alias for ``roll``.
         """
@@ -233,13 +239,13 @@ class Dice(Term):
         self.total = sum(self.results)
         return self
 
-    def roll(self):
-        return [mt_rand(min=1, max=self.sides) for i in range(self.rolls)]
+    def roll(self) -> list[int]:
+        return [mt_rand(min=1, max=self.sides) for i in range(self.rolls)]  # type: ignore[arg-type]
 
 
 class Integer(int, Term):
     """A wrapper around the int class"""
 
     @classmethod
-    def parse(cls, string, location, tokens):
+    def parse(cls, string: str, location: int, tokens: Any) -> Integer:
         return cls(tokens[0])

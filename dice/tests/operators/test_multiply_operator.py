@@ -42,14 +42,14 @@ def test_repr():
     assert repr(operator) == "Multiply(4, 2)"
 
 
-def test_repr():
+def test_str():
     """
     Test that the string representation of the operator is what is
     expected.
 
     Given an instance of the Multiply operator on operands 4 and 2
-    When the method __repr__ is called
-    Then the result should be "Add(4, 2)"
+    When the method __str__ is called
+    Then the result should be "4*2"
     """
     operator = Multiply(4, 2)
     assert str(operator) == "4*2"

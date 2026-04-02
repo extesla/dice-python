@@ -41,13 +41,13 @@ def test_add_operator_repr():
     assert repr(operator) == "Add(5, 1)"
 
 
-def test_add_operator_repr():
+def test_add_operator_str():
     """
     Test that the string representation of the operator is what is
     expected.
 
     Given an instance of the Add operator on operands 5 and 1
-    When the method __repr__ is called
+    When the method __str__ is called
     Then the result should be "5+1"
     """
     operator = Add(5, 1)

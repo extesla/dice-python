@@ -19,6 +19,11 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
+from __future__ import annotations
+
+from collections.abc import Iterable
+from typing import Any
+
 from dice.tokens import Token, Integer
 from dice.utils import classname
 import random
@@ -48,18 +53,19 @@ class Operator(Token):
     """
 
     @classmethod
-    def parse(cls, string, location, tokens):
+    def parse(cls, string: str, location: int, tokens: Any) -> Operator:
         return cls(*tokens)
 
-    def __init__(self, *operands):
-        self.operands = self.original_operands = operands
+    def __init__(self, *operands: Any) -> None:
+        self.operands: Any = operands
+        self.original_operands: tuple[Any, ...] = operands
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{0}({1})".format(
             classname(self), ", ".join(map(str, self.original_operands))
         )
 
-    def evaluate(self):
+    def evaluate(self) -> Any:
         """
         Evaluates an operator against operands.
 
@@ -75,40 +81,40 @@ class Operator(Token):
         return self.result
 
     @property
-    def function(self):
+    def function(self) -> Any:
         raise NotImplementedError("Operator subclass has no function")
 
 
 class IntegerOperator(Operator):
-    def evaluate_object(self, obj):
-        return super(IntegerOperator, self).evaluate_object(obj, Integer)
+    def evaluate_object(self, obj: Any, cls: type | None = Integer) -> Any:  # type: ignore[override]
+        return super().evaluate_object(obj, cls)
 
 
 # @operator(literal="/")
 class Divide(IntegerOperator):
-    function = operator.floordiv
+    function = operator.floordiv  # type: ignore[assignment]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{}".format("/".join(map(str, self.original_operands)))
 
 
 # @operator(literal="*")
 class Multiply(IntegerOperator):
-    function = operator.mul
+    function = operator.mul  # type: ignore[assignment]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{}".format("*".join(map(str, self.original_operands)))
 
 
 # @operator(literal="-")
 class Subtract(IntegerOperator):
-    def function(self, minuend, subtrahend):
+    def function(self, minuend: int, subtrahend: int) -> int:
         """
         Subtracts the subtrahend from the minuend.
 
         :param minuend: Left hand value of the operation.
         :type minuend: int
-        :param minuend: Right hand value of the operation.
+        :param subtrahend: Right hand value of the operation.
         :return: The result of the difference from the given values.
         """
         result = operator.sub(minuend, subtrahend)
@@ -116,15 +122,15 @@ class Subtract(IntegerOperator):
             return 1
         return result
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{}".format("-".join(map(str, self.original_operands)))
 
 
 # @operator(literal="+")
 class Add(IntegerOperator):
-    function = operator.add
+    function = operator.add  # type: ignore[assignment]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{}".format("+".join(map(str, self.original_operands)))
 
 
@@ -152,10 +158,10 @@ class Drop(Operator):
     [8]
     """
 
-    def function(self, iterable, n):
+    def function(self, iterable: Iterable[Any], n: int) -> list[Any]:
         return sorted(iterable)[n:]
 
-    def literal(self):
+    def literal(self) -> str:
         return "drop"
 
 
@@ -177,7 +183,7 @@ class Keep(Operator):
     [5, 8]
     """
 
-    def function(self, iterable, n):
+    def function(self, iterable: Iterable[Any], n: int) -> list[Any]:
         #: If we're indicating that we don't want to keep anything (!keep(0))
         #: or we want to keep fewer than nothing (!keep(-2)) then we should
         #: just short circuit out of this and return an empty array.
@@ -197,13 +203,13 @@ class Advantage(Operator):
     2d20+5!advantage
     """
 
-    def function(self, iterable):
+    def function(self, iterable: Iterable[Any]) -> Any:
         result = sorted(iterable, reverse=True)[:1]
         if result:
             return result[0]
         raise IndexError("Unable to select advantaged result from: {}".format(result))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """
         The ``Advantage`` operator has a custom __repr__.
         """
@@ -221,7 +227,7 @@ class Disadvantage(Operator):
     2d20+5!disadvantage
     """
 
-    def function(self, iterable):
+    def function(self, iterable: Iterable[Any]) -> Any:
         result = sorted(iterable)[:1]
         if result:
             return result[0]
@@ -229,7 +235,7 @@ class Disadvantage(Operator):
             "Unable to select disadvantaged result from: {}".format(result)
         )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """
         The ``Disadvantage`` operator has a custom __repr__.
         """

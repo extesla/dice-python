@@ -1,5 +1,9 @@
+from __future__ import annotations
+
 import re
-from pyparsing import infixNotation, opAssoc
+from typing import Any
+
+from pyparsing import infixNotation, opAssoc, ParserElement, ParseResults
 from .grammar import expression, flags, operator
 from .operators import (
     Add,
@@ -9,6 +13,7 @@ from .operators import (
     Drop,
     Keep,
     Multiply,
+    Operator,
     Subtract,
 )
 from .tokens import Dice, Integer
@@ -18,13 +23,14 @@ class Roll:
     """An object that represents the roll and its results."""
 
     @property
-    def result(self):
+    def result(self) -> Any:
         return self._result
 
-    def __init__(self, expression: str):
+    def __init__(self, expression: str) -> None:
         self.expression = expression
+        self._result: Any = None
 
-    def evaluate(self, tokens):
+    def evaluate(self, tokens: list[Any]) -> Any:
         """Evaluate the stack of tokens.
 
         This is a first pass at the evaluation function. We could improve it with
@@ -32,7 +38,7 @@ class Roll:
         something that actually works as expected first.
         """
         # TODO: The result here should not be a scalar, but rather a result.
-        result = None
+        result: Any = None
         prev_token = None
 
         #: Iterate over the tokens passed for evaluation. This will continue until
@@ -79,7 +85,8 @@ class Roll:
             prev_token = cur_token
         return result
 
-    def handle_flags(self, flag, expr):
+    def handle_flags(self, flag: str, expr: Any) -> Any:
+        t: Operator
         if flag in ("!advantage", "!adv"):
             t = Advantage(expr)
         elif flag in ("!disadvantage", "!dis"):
@@ -90,7 +97,7 @@ class Roll:
             t = Keep(expr)
         return t.evaluate()
 
-    def handle_operand(self, operand):
+    def handle_operand(self, operand: Any) -> Any:
         """Evaluates an operand on either the left or right of an operator."""
         operand_type = type(operand)
         if operand_type == type([]):
@@ -101,7 +108,7 @@ class Roll:
             result = (operand.evaluate()).total
         return result
 
-    def handle_operator(self, op, left, right):
+    def handle_operator(self, op: Any, left: Any, right: Any) -> int:
         left = self.handle_operand(left)
         print(f"> .. {left}")
 
@@ -110,23 +117,24 @@ class Roll:
         right = self.handle_operand(right)
         print(f"> .. {right}")
 
+        op_token: Operator
         if str(op) == "+":
-            t = Add(left, right)
-        if str(op) == "-":
-            t = Subtract(left, right)
-        if str(op) == "*":
-            t = Multiply(left, right)
-        if str(op) == "/":
-            t = Divide(left, right)
-        return int(t.evaluate())
+            op_token = Add(left, right)
+        elif str(op) == "-":
+            op_token = Subtract(left, right)
+        elif str(op) == "*":
+            op_token = Multiply(left, right)
+        elif str(op) == "/":
+            op_token = Divide(left, right)
+        return int(op_token.evaluate())
 
-    def roll(self):
+    def roll(self) -> Roll:
         parsed = parse_expression_using_infix_notation(self.expression)
         self._result = self.evaluate(parsed.asList())
         return self
 
 
-def parse_expression_using_infix_notation(expr):
+def parse_expression_using_infix_notation(expr: str) -> ParseResults:
     infix_expression = infixNotation(expression(), [
         (flags(), 1, opAssoc.LEFT,),
         (operator(), 2, opAssoc.LEFT,),

@@ -1,6 +1,6 @@
 [project]
 name = "dice"
-version = "0.5.0-dev"
+version = "1.0.0-dev"
 description = "The dice library is a robust dice rolling library."
 readme = "README.md"
 license = "MIT"
@@ -35,6 +35,8 @@ dev = [
     "pytest-cov>=5.0",
     "pytest-mock>=3.12",
     "black>=24.0",
+    "ruff>=0.4.0",
+    "mypy>=1.10",
 ]
 
 [build-system]
